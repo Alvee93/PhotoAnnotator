@@ -48,9 +48,9 @@ private slots:
     void show_image(QString imgPath);
     void show_image_metadata();
     void show_image_result();
-    void show_comboBox();
+    void show_comboBox_make();
 
-    void on_comboBox_currentIndexChanged(const QString &arg1);
+    void on_comboBox_make_currentIndexChanged(const QString &arg1);
 
     void on_listView_2_activated(const QModelIndex &index);
 

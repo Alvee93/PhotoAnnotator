@@ -2,8 +2,8 @@
 #include "ui_mainwindow.h"
 
 QString folderPath, absFilePath;
-static const QString path = "m_managerV03.sqlite";
-DbManager db(path);
+static const QString db_path = "m_managerV03.sqlite";
+DbManager db(db_path);
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -34,7 +34,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     db.createTable();
 
-    show_comboBox();
+    show_comboBox_make();
 }
 
 MainWindow::~MainWindow()
@@ -95,14 +95,14 @@ void MainWindow::on_pushButton_clicked()
             // Populates the listView_2
             show_image_result();
 
-            show_comboBox();
+            show_comboBox_make();
     }
 
     else{
         QMessageBox::information(this, tr("Important notice"), tr("Please select an image first and then add it to library."));
     }
 }
-
+/* This function is called when user clicks button- Quick Browse */
 void MainWindow::on_quickBrowse_clicked()
 {
     QFileDialog dialog(this);
@@ -118,15 +118,18 @@ void MainWindow::on_quickBrowse_clicked()
 void MainWindow::show_image(QString imgPath)
 {
     if (!imgPath.isEmpty()){
+        QMatrix rm;
+        rm.rotate(0);
+
         QPixmap pix(imgPath);
 
-        int w = ui->imgLabel->width ();
-        int h = ui->imgLabel->height ();
-        ui->imgLabel->setPixmap (pix.scaled (w,h,Qt::KeepAspectRatio));
+        int w = ui->imgLabel->width();
+        int h = ui->imgLabel->height();
+        ui->imgLabel->setPixmap (pix.transformed(rm).scaled(w,h,Qt::KeepAspectRatio));
 
-        int w2 = ui->imgLabel_2->width ();
-        int h2 = ui->imgLabel_2->height ();
-        ui->imgLabel_2->setPixmap (pix.scaled (w2,h2,Qt::KeepAspectRatio));
+        int w2 = ui->imgLabel_2->width();
+        int h2 = ui->imgLabel_2->height();
+        ui->imgLabel_2->setPixmap (pix.transformed(rm).scaled(w2,h2,Qt::KeepAspectRatio));
 
         //extract_exif(imgPath);                        // parsing the exif metadata
     }
@@ -159,13 +162,13 @@ void MainWindow::show_image_metadata()
     ui->tableView->setModel(modal);
 }
 
-/* This function populates the listView_2 based on what is selected in the combobox for the first time the app is launched */
+/* This function populates the listView_2 based on what is selected in the comboBox_make for the first time the app is launched */
 void MainWindow::show_image_result()
 {
     QSqlQueryModel *modal = new QSqlQueryModel;
     QSqlQuery query;
     bool success = false;
-    QString make = ui->comboBox->currentText();
+    QString make = ui->comboBox_make->currentText();
     query.prepare("SELECT path FROM images WHERE make = (:make)");
     query.bindValue(":make", make);
     success = query.exec();
@@ -187,8 +190,8 @@ void MainWindow::show_image_result()
     ui->listView_2->setModel(modal);
 }
 
-/* This function popilates the comboBox with 'make' information */
-void MainWindow::show_comboBox()
+/* This function popilates the comboBox_make with 'make' information */
+void MainWindow::show_comboBox_make()
 {
     QSqlQueryModel *modal = new QSqlQueryModel;
     QSqlQuery query;
@@ -200,7 +203,7 @@ void MainWindow::show_comboBox()
     }
 
     modal->setQuery(query);
-    ui->comboBox->setModel(modal);
+    ui->comboBox_make->setModel(modal);
 }
 
 /* This function extracts the Exif information from image and stores them in db */
@@ -299,13 +302,13 @@ void MainWindow::extract_exif(QString imgPath)
     */
 }
 
-/* Shows the (paths of) images on listView_2 depending on what is selected on the comboBox for camera_make */
-void MainWindow::on_comboBox_currentIndexChanged(const QString &arg1) //const QString &arg1
+/* Shows the (paths of) images on listView_2 depending on what is selected on the comboBox_make for camera_make */
+void MainWindow::on_comboBox_make_currentIndexChanged(const QString &arg1) //const QString &arg1
 {
     QSqlQueryModel *modal = new QSqlQueryModel;
     QSqlQuery query;
     bool success = false;
-    QString make = ui->comboBox->currentText();
+    QString make = ui->comboBox_make->currentText();
     query.prepare("SELECT path FROM images WHERE make = (:make)");
     query.bindValue(":make", make);
     success = query.exec();
@@ -339,14 +342,26 @@ void MainWindow::on_comboBox_currentIndexChanged(const QString &arg1) //const QS
 /* When user selects a photo from the listView_2, the image is loaded in imgLabel_3 & respective data is populated in tableView_2 */
 void MainWindow::on_listView_2_activated(const QModelIndex &index)
 {
-    QString val = ui->listView_2->model()->data(index).toString();
+    QString image_path = ui->listView_2->model()->data(index).toString();
     //qDebug() << "val = " << val; //val
     //qDebug() << "index = " << ui->listView_2->model()->index(0, 0).data().toMap().value("name").toString(); //index
 
-    QPixmap pix(val);
+    QMatrix rm;
+    QSqlQuery rotation_query;
+    rotation_query.prepare("SELECT orientation FROM images WHERE path = (:path)");
+    rotation_query.bindValue(":path", image_path);
+    if (rotation_query.exec())
+    {
+        while(rotation_query.next()) {
+            if(rotation_query.value(0).toInt() == 6) rm.rotate(90);
+            else rm.rotate(0);
+        }
+    }
+
+    QPixmap pix(image_path);
     int w = ui->imgLabel->width ();
     int h = ui->imgLabel->height ();
-    ui->imgLabel_3->setPixmap (pix.scaled (w,h,Qt::KeepAspectRatio));
+    ui->imgLabel_3->setPixmap (pix.transformed(rm).scaled (w,h,Qt::KeepAspectRatio));
     //ui->imgLabel_3->setText(val);
     QSqlQueryModel *modal = new QSqlQueryModel;
     QSqlQuery query;
@@ -355,7 +370,7 @@ void MainWindow::on_listView_2_activated(const QModelIndex &index)
                   "o_datetime, d_datetime, subsecond, exposure, f_stop, iso, s_distance, e_bias, flash, metering_mode, "
                   "focal_length, focal_length_35mm, latitude, longitude, altitude, min_focal_length, max_focal_length, "
                   "min_f_stop, max_f_stop, lens_make, lens_model FROM images WHERE path = (:path)");
-    query.bindValue(":path", val);
+    query.bindValue(":path", image_path);
     success = query.exec();
     if(!success){
         qDebug() << "Fetching metadata failed: " << query.lastError();
