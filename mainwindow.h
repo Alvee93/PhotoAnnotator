@@ -20,7 +20,12 @@
 
 #include <QMessageBox>
 
-#include <QFileIconProvider>
+#include <stdlib.h> //------------------------------------ MAY BE UNUSEFUL
+#include <daylightclass.h>
+#include <weatherclass.h>
+#include <gmapclass.h>
+
+#include <QWebEngineView>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -35,6 +40,7 @@ public:
     ~MainWindow();
 
     void extract_exif(QString imgPath);
+    void extractDatetimeLatLongData(string s);
 
 private slots:
     void on_treeView_clicked(const QModelIndex &index);
@@ -45,7 +51,6 @@ private slots:
 
     void on_quickBrowse_clicked();
 
-    void show_image(QString imgPath);
     void show_image_metadata();
     void show_image_result();
     void show_comboBox_make();
@@ -57,6 +62,8 @@ private slots:
     void on_listView_2_clicked(const QModelIndex &index);
 
     void on_listView_2_doubleClicked(const QModelIndex &index);
+
+    void on_pushButton_update_clicked();
 
 private:
     Ui::MainWindow *ui;

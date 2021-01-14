@@ -42,7 +42,8 @@ bool DbManager::createTable()
                   "datetime TEXT, o_datetime TEXT, d_datetime TEXT, subsecond TEXT, exposure INTEGER, f_stop REAL, "
                   "iso INTEGER, s_distance REAL, e_bias REAL, flash INTEGER, metering_mode INTEGER, focal_length REAL, "
                   "focal_length_35mm REAL, latitude REAL, longitude REAL, altitude REAL, min_focal_length REAL, "
-                  "max_focal_length REAL, min_f_stop REAL, max_f_stop REAL, lens_make TEXT, lens_model TEXT);");
+                  "max_focal_length REAL, min_f_stop REAL, max_f_stop REAL, lens_make TEXT, lens_model TEXT, "
+                  "daylight_status TEXT, weather_status TEXT, location TEXT, person_tags TEXT, event TEXT);");
 
     if (!query.exec())
     {
@@ -53,7 +54,7 @@ bool DbManager::createTable()
     return success;
 }
 
-int DbManager::addImg(const QString& img, const QString& make, const QString& model, const QString& software, const int& bps, const int& width, const int& height, const QString& description, const int& orientation, const QString& copyright, const QString& datetime, const QString& o_datetime, const QString& d_datetime, const QString& subsecond, const int& exposure, const double& f_stop, const int& iso, const double& s_distance, const double& e_bias, const int& flash, const int& metering_mode, const double& focal_length, const double& focal_length_35mm, const double& latitude, const double& longitude, const double& altitude, const double& min_focal_length, const double& max_focal_length, const double& min_f_stop, const double& max_f_stop,const QString& lens_make, const QString& lens_model)
+int DbManager::addImg(const QString& img, const QString& make, const QString& model, const QString& software, const int& bps, const int& width, const int& height, const QString& description, const int& orientation, const QString& copyright, const QString& datetime, const QString& o_datetime, const QString& d_datetime, const QString& subsecond, const int& exposure, const double& f_stop, const int& iso, const double& s_distance, const double& e_bias, const int& flash, const int& metering_mode, const double& focal_length, const double& focal_length_35mm, const double& latitude, const double& longitude, const double& altitude, const double& min_focal_length, const double& max_focal_length, const double& min_f_stop, const double& max_f_stop,const QString& lens_make, const QString& lens_model, QString daylight_status, QString weather_status, QString location, QString person_tags, QString event)
 {
     bool success = false;
 
@@ -63,7 +64,7 @@ int DbManager::addImg(const QString& img, const QString& make, const QString& mo
         queryAdd.prepare("INSERT INTO images (path, make, model, software, bps, width, height, description, orientation, copyright, "
                          "datetime, o_datetime, d_datetime, subsecond, exposure, f_stop, iso, s_distance, e_bias, flash, metering_mode, "
                          "focal_length, focal_length_35mm, latitude, longitude, altitude, min_focal_length, max_focal_length, min_f_stop, "
-                         "max_f_stop, lens_make, lens_model) VALUES (:path, :make, :model, :software, :bps, :width, :height, :description, :orientation, :copyright, :datetime, :o_datetime, :d_datetime, :subsecond, :exposure, :f_stop, :iso, :s_distance, :e_bias, :flash, :metering_mode, :focal_length, :focal_length_35mm, :latitude, :longitude, :altitude, :min_focal_length, :max_focal_length, :min_f_stop, :max_f_stop, :lens_make, :lens_model)");
+                         "max_f_stop, lens_make, lens_model, daylight_status, weather_status, location, person_tags, event) VALUES (:path, :make, :model, :software, :bps, :width, :height, :description, :orientation, :copyright, :datetime, :o_datetime, :d_datetime, :subsecond, :exposure, :f_stop, :iso, :s_distance, :e_bias, :flash, :metering_mode, :focal_length, :focal_length_35mm, :latitude, :longitude, :altitude, :min_focal_length, :max_focal_length, :min_f_stop, :max_f_stop, :lens_make, :lens_model, :daylight_status, :weather_status, :location, :person_tags, :event)");
         queryAdd.bindValue(":path", img);
         queryAdd.bindValue(":make", make);
         queryAdd.bindValue(":model", model);
@@ -96,6 +97,11 @@ int DbManager::addImg(const QString& img, const QString& make, const QString& mo
         queryAdd.bindValue(":max_f_stop", max_f_stop);
         queryAdd.bindValue(":lens_make", lens_make);
         queryAdd.bindValue(":lens_model", lens_model);
+        queryAdd.bindValue(":daylight_status", daylight_status);
+        queryAdd.bindValue(":weather_status", weather_status);
+        queryAdd.bindValue(":location", location);
+        queryAdd.bindValue(":person_tags", person_tags);
+        queryAdd.bindValue(":event", event);
 
         if(queryAdd.exec())
         {
@@ -115,6 +121,29 @@ int DbManager::addImg(const QString& img, const QString& make, const QString& mo
     }
 
     return success;
+}
+
+bool DbManager::imgExists(const QString& img) const
+{
+    bool exists = false;
+
+    QSqlQuery checkQuery;
+    checkQuery.prepare("SELECT path FROM images WHERE path = (:path)");
+    checkQuery.bindValue(":path", img);
+
+    if (checkQuery.exec())
+    {
+        if (checkQuery.next())
+        {
+            exists = true;
+        }
+    }
+    else
+    {
+        qDebug() << "Image exist query failed: " << checkQuery.lastError();
+    }
+
+    return exists;
 }
 
 bool DbManager::removeImg(const QString& img)
@@ -153,27 +182,323 @@ void DbManager::printAllImages() const
     }
 }
 
-bool DbManager::imgExists(const QString& img) const
+string DbManager::getDatetimeLatLongData(QString image_path)
 {
-    bool exists = false;
+    QSqlQuery query2;
+    bool success2 = false;
+    string raw_data="";
 
-    QSqlQuery checkQuery;
-    checkQuery.prepare("SELECT path FROM images WHERE path = (:path)");
-    checkQuery.bindValue(":path", img);
+    query2.prepare("SELECT o_datetime, latitude, longitude FROM images WHERE path = (:path2)");
+    query2.bindValue(":path2", image_path.toUtf8().constData());
 
-    if (checkQuery.exec())
-    {
-        if (checkQuery.next())
-        {
-            exists = true;
+    success2 = query2.exec();
+    if(!success2){
+        qDebug() << "Fetching metadata failed: " << query2.lastError();
+    }
+    if(query2.first()){
+        for(int i=0; i<3; i++){
+            raw_data = raw_data + query2.value(i).toString().toUtf8().constData() + ",";
         }
+
     }
-    else
-    {
-        qDebug() << "Image exists failed: " << checkQuery.lastError();
+    else{
+        qDebug() << "Fetching data failed";
     }
 
-    return exists;
+    return raw_data;
+}
+
+QSqlQuery DbManager::getAllData(QString image_path)
+{
+    QSqlQuery query2;
+    bool success2 = false;
+
+    query2.prepare("SELECT make, model, software, bps, width, height, description, orientation, copyright, datetime, "
+                  "o_datetime, d_datetime, subsecond, exposure, f_stop, iso, s_distance, e_bias, flash, metering_mode, "
+                  "focal_length, focal_length_35mm, latitude, longitude, altitude, min_focal_length, max_focal_length, "
+                  "min_f_stop, max_f_stop, lens_make, lens_model, daylight_status, weather_status, location, person_tags, event"
+                  " FROM images WHERE path = (:path2)");
+    query2.bindValue(":path2", image_path.toUtf8().constData());
+
+    success2 = query2.exec();
+    if(!success2){
+        qDebug() << "Fetching metadata failed: " << query2.lastError();
+    }
+    else{
+        //qDebug() << "Success fetching all data.";
+    }
+
+    return query2;
+}
+
+QSqlQuery DbManager::getPathsFromMake(QString make)
+{
+    QSqlQuery query;
+    bool success2 = false;
+
+    query.prepare("SELECT path FROM images WHERE make = (:make)");
+    query.bindValue(":make", make.toUtf8().constData());
+
+    success2 = query.exec();
+    if(!success2){
+        qDebug() << "Fetching metadata failed: " << query.lastError();
+    }
+    else{
+        //qDebug() << "Success fetching make data.";
+    }
+
+    return query;
+}
+
+QSqlQuery DbManager::getOrientationFromPath(QString image_path)
+{
+    QSqlQuery query;
+    bool success2 = false;
+
+    query.prepare("SELECT orientation FROM images WHERE path = (:path)");
+    query.bindValue(":path", image_path.toUtf8().constData());
+
+    success2 = query.exec();
+    if(!success2){
+        qDebug() << "Fetching metadata failed: " << query.lastError();
+    }
+    else{
+        //qDebug() << "Success orientation make data.";
+    }
+
+    return query;
+}
+
+QString DbManager::getDaylightFromPath(QString image_path)
+{
+    QSqlQuery query;
+    bool success2 = false;
+
+    query.prepare("SELECT daylight_status FROM images WHERE path = (:path)");
+    query.bindValue(":path", image_path.toUtf8().constData());
+
+    success2 = query.exec();
+    if(!success2){
+        qDebug() << "Fetching daylight failed: " << query.lastError();
+        return "N/A";
+    }
+    else{
+        while(query.next()) {
+            return query.value(0).toString();
+        }
+        //qDebug() << "Success fetching daylight data.";
+    }
+
+    return "N/A";
+}
+
+QString DbManager::getWeatherFromPath(QString image_path)
+{
+    QSqlQuery query;
+    bool success2 = false;
+
+    query.prepare("SELECT weather_status FROM images WHERE path = (:path)");
+    query.bindValue(":path", image_path.toUtf8().constData());
+
+    success2 = query.exec();
+    if(!success2){
+        qDebug() << "Fetching weather_status failed: " << query.lastError();
+        return "N/A";
+    }
+    else{
+        while(query.next()) {
+            return query.value(0).toString();
+        }
+        //qDebug() << "Success fetching weather_status data.";
+    }
+
+    return "N/A";
+}
+
+QString DbManager::getLocationFromPath(QString image_path)
+{
+    QSqlQuery query;
+    bool success2 = false;
+
+    query.prepare("SELECT location FROM images WHERE path = (:path)");
+    query.bindValue(":path", image_path.toUtf8().constData());
+
+    success2 = query.exec();
+    if(!success2){
+        qDebug() << "Fetching location failed: " << query.lastError();
+        return "N/A";
+    }
+    else{
+        while(query.next()) {
+            return query.value(0).toString();
+        }
+        //qDebug() << "Success fetching location data.";
+    }
+
+    return "N/A";
+}
+
+QString DbManager::getPersonTagsFromPath(QString image_path)
+{
+    QSqlQuery query;
+    bool success2 = false;
+
+    query.prepare("SELECT person_tags FROM images WHERE path = (:path)");
+    query.bindValue(":path", image_path.toUtf8().constData());
+
+    success2 = query.exec();
+    if(!success2){
+        qDebug() << "Fetching person_tags failed: " << query.lastError();
+        return "N/A";
+    }
+    else{
+        while(query.next()) {
+            return query.value(0).toString();
+        }
+        //qDebug() << "Success fetching person_tags data.";
+    }
+
+    return "N/A";
+}
+
+QString DbManager::getEventFromPath(QString image_path)
+{
+    QSqlQuery query;
+    bool success2 = false;
+
+    query.prepare("SELECT event FROM images WHERE path = (:path)");
+    query.bindValue(":path", image_path.toUtf8().constData());
+
+    success2 = query.exec();
+    if(!success2){
+        qDebug() << "Fetching event failed: " << query.lastError();
+        return "N/A";
+    }
+    else{
+        while(query.next()) {
+            return query.value(0).toString();
+        }
+        //qDebug() << "Success fetching event data.";
+    }
+
+    return "N/A";
+}
+
+bool DbManager::setDaylightFromPath(QString daylight, QString image_path) const
+{
+    QSqlQuery query;
+    bool success2 = false;
+
+    query.prepare("UPDATE images SET daylight_status = (:daylight) WHERE path = (:path)");
+    query.bindValue(":daylight", daylight.toUtf8().constData());
+    query.bindValue(":path", image_path.toUtf8().constData());
+    success2 = query.exec();
+
+    if(!success2){
+        qDebug() << "Update daylight failed: " << query.lastError();
+        return false;
+    }
+    else{
+        //qDebug() << "Success updating daylight.";
+    }
+    return true;
+}
+
+bool DbManager::setWeatherFromPath(QString weather, QString image_path)
+{
+    QSqlQuery query;
+    bool success2 = false;
+
+    query.prepare("UPDATE images SET weather_status = (:weather_status) WHERE path = (:path)");
+    query.bindValue(":weather_status", weather.toUtf8().constData());
+    query.bindValue(":path", image_path.toUtf8().constData());
+    success2 = query.exec();
+
+    if(!success2){
+        qDebug() << "Update weather failed: " << query.lastError();
+        return false;
+    }
+    else{
+        //qDebug() << "Success updating weather.";
+    }
+    return true;
+}
+
+bool DbManager::setLocationFromPath(QString location, QString image_path)
+{
+    QSqlQuery query;
+    bool success2 = false;
+
+    query.prepare("UPDATE images SET location = (:location) WHERE path = (:path)");
+    query.bindValue(":location", location.toUtf8().constData());
+    query.bindValue(":path", image_path.toUtf8().constData());
+    success2 = query.exec();
+
+    if(!success2){
+        qDebug() << "Update location failed: " << query.lastError();
+        return false;
+    }
+    else{
+        //qDebug() << "Success updating location.";
+    }
+    return true;
+}
+
+bool DbManager::setPersonFromPath(QString p_tags, QString image_path) const
+{
+    QSqlQuery query;
+    bool success2 = false;
+
+    query.prepare("UPDATE images SET person_tags = (:p_tags) WHERE path = (:path)");
+    query.bindValue(":p_tags", p_tags.toUtf8().constData());
+    query.bindValue(":path", image_path.toUtf8().constData());
+    success2 = query.exec();
+
+    if(!success2){
+        qDebug() << "Update person_tags failed: " << query.lastError();
+        return false;
+    }
+    else{
+        //qDebug() << "Success updating person_tags.";
+    }
+    return true;
+}
+
+bool DbManager::setEventFromPath(QString event, QString image_path)
+{
+    QSqlQuery query;
+    bool success2 = false;
+
+    query.prepare("UPDATE images SET event = (:event) WHERE path = (:path)");
+    query.bindValue(":event", event.toUtf8().constData());
+    query.bindValue(":path", image_path.toUtf8().constData());
+    success2 = query.exec();
+
+    if(!success2){
+        qDebug() << "Update event failed: " << query.lastError();
+        return false;
+    }
+    else{
+        //qDebug() << "Success updating event.";
+    }
+    return true;
+}
+
+QSqlQuery DbManager::getAllMakes()
+{
+    QSqlQuery query;
+    bool success2 = false;
+
+    query.prepare("SELECT DISTINCT make FROM images");
+    success2 = query.exec();
+    if(!success2){
+        qDebug() << "Fetching metadata failed: " << query.lastError();
+    }
+    else{
+        //qDebug() << "Success fetching make data.";
+    }
+
+    return query;
 }
 
 bool DbManager::removeAllImages()

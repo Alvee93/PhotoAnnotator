@@ -1,4 +1,4 @@
-QT       += core gui sql
+QT       += core gui sql webenginewidgets
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -11,15 +11,21 @@ CONFIG += c++11
 RC_ICONS = p_album.ico
 
 SOURCES += \
+    daylightclass.cpp \
     dbmanager.cpp \
     exif.cpp \
+    gmapclass.cpp \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    weatherclass.cpp
 
 HEADERS += \
+    daylightclass.h \
     dbmanager.h \
     exif.h \
-    mainwindow.h
+    gmapclass.h \
+    mainwindow.h \
+    weatherclass.h
 
 FORMS += \
     mainwindow.ui

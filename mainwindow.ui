@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>796</width>
-    <height>653</height>
+    <width>1093</width>
+    <height>676</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -19,8 +19,8 @@
      <rect>
       <x>10</x>
       <y>10</y>
-      <width>1101</width>
-      <height>601</height>
+      <width>1080</width>
+      <height>621</height>
      </rect>
     </property>
     <property name="currentIndex">
@@ -33,20 +33,20 @@
      <widget class="QTreeView" name="treeView">
       <property name="geometry">
        <rect>
-        <x>10</x>
+        <x>20</x>
         <y>10</y>
-        <width>331</width>
-        <height>321</height>
+        <width>330</width>
+        <height>320</height>
        </rect>
       </property>
      </widget>
      <widget class="QPushButton" name="pushButton">
       <property name="geometry">
        <rect>
-        <x>10</x>
+        <x>20</x>
         <y>340</y>
-        <width>75</width>
-        <height>23</height>
+        <width>100</width>
+        <height>30</height>
        </rect>
       </property>
       <property name="text">
@@ -56,36 +56,36 @@
      <widget class="QPushButton" name="pushButton_2">
       <property name="geometry">
        <rect>
-        <x>260</x>
+        <x>250</x>
         <y>340</y>
-        <width>75</width>
-        <height>23</height>
+        <width>100</width>
+        <height>30</height>
        </rect>
       </property>
       <property name="text">
-       <string>PushButton</string>
+       <string>TBA</string>
       </property>
      </widget>
      <widget class="QPushButton" name="pushButton_3">
       <property name="geometry">
        <rect>
-        <x>10</x>
+        <x>20</x>
         <y>390</y>
-        <width>75</width>
-        <height>23</height>
+        <width>100</width>
+        <height>30</height>
        </rect>
       </property>
       <property name="text">
-       <string>PushButton</string>
+       <string>TBA</string>
       </property>
      </widget>
      <widget class="QPushButton" name="quickBrowse">
       <property name="geometry">
        <rect>
-        <x>260</x>
+        <x>250</x>
         <y>390</y>
-        <width>75</width>
-        <height>23</height>
+        <width>100</width>
+        <height>30</height>
        </rect>
       </property>
       <property name="text">
@@ -95,10 +95,10 @@
      <widget class="QListView" name="listView">
       <property name="geometry">
        <rect>
-        <x>10</x>
-        <y>430</y>
-        <width>760</width>
-        <height>141</height>
+        <x>20</x>
+        <y>460</y>
+        <width>1040</width>
+        <height>130</height>
        </rect>
       </property>
       <property name="iconSize">
@@ -138,40 +138,27 @@
      <widget class="QLabel" name="imgLabel">
       <property name="geometry">
        <rect>
-        <x>370</x>
+        <x>400</x>
         <y>10</y>
-        <width>400</width>
-        <height>391</height>
+        <width>660</width>
+        <height>390</height>
        </rect>
       </property>
       <property name="text">
-       <string>~ Browse to view an image ~</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="exifError">
-      <property name="geometry">
-       <rect>
-        <x>110</x>
-        <y>340</y>
-        <width>131</width>
-        <height>16</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>E.Error</string>
+       <string>                                                                                ~ Browse to view an image ~</string>
       </property>
      </widget>
      <widget class="QLabel" name="label_2">
       <property name="geometry">
        <rect>
-        <x>110</x>
-        <y>370</y>
-        <width>141</width>
+        <x>20</x>
+        <y>440</y>
+        <width>101</width>
         <height>16</height>
        </rect>
       </property>
       <property name="text">
-       <string>Status</string>
+       <string>Images (List View)</string>
       </property>
      </widget>
     </widget>
@@ -182,22 +169,22 @@
      <widget class="QLabel" name="imgLabel_2">
       <property name="geometry">
        <rect>
-        <x>120</x>
+        <x>320</x>
         <y>10</y>
-        <width>541</width>
-        <height>361</height>
+        <width>670</width>
+        <height>460</height>
        </rect>
       </property>
       <property name="text">
-       <string>                                                             ~ Browse to view an image ~</string>
+       <string>                                                                                                                    ~ Browse to view an image ~</string>
       </property>
      </widget>
      <widget class="QTableView" name="tableView">
       <property name="geometry">
        <rect>
-        <x>10</x>
-        <y>480</y>
-        <width>750</width>
+        <x>20</x>
+        <y>500</y>
+        <width>1040</width>
         <height>80</height>
        </rect>
       </property>
@@ -214,6 +201,150 @@
        <bool>false</bool>
       </property>
      </widget>
+     <widget class="QTextEdit" name="textEdit_person">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>240</y>
+        <width>250</width>
+        <height>30</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>220</y>
+        <width>100</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Person Tags</string>
+      </property>
+     </widget>
+     <widget class="QTextEdit" name="textEdit_location">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>170</y>
+        <width>250</width>
+        <height>30</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_4">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>150</y>
+        <width>100</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Location</string>
+      </property>
+     </widget>
+     <widget class="QTextEdit" name="textEdit_weather">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>100</y>
+        <width>250</width>
+        <height>30</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_5">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>80</y>
+        <width>100</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Weather</string>
+      </property>
+     </widget>
+     <widget class="QTextEdit" name="textEdit_daylight">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>30</y>
+        <width>250</width>
+        <height>30</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_6">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>10</y>
+        <width>100</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Daylight</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="pushButton_update">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>380</y>
+        <width>100</width>
+        <height>30</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Update</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_7">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>480</y>
+        <width>111</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Image Data</string>
+      </property>
+     </widget>
+     <widget class="QTextEdit" name="textEdit_event">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>310</y>
+        <width>250</width>
+        <height>30</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_9">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>290</y>
+        <width>100</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Event</string>
+      </property>
+     </widget>
     </widget>
     <widget class="QWidget" name="tab_3">
      <attribute name="title">
@@ -223,7 +354,7 @@
       <property name="geometry">
        <rect>
         <x>20</x>
-        <y>40</y>
+        <y>30</y>
         <width>211</width>
         <height>22</height>
        </rect>
@@ -235,14 +366,14 @@
      <widget class="QLabel" name="imgLabel_3">
       <property name="geometry">
        <rect>
-        <x>240</x>
-        <y>40</y>
-        <width>530</width>
-        <height>370</height>
+        <x>250</x>
+        <y>9</y>
+        <width>750</width>
+        <height>440</height>
        </rect>
       </property>
       <property name="text">
-       <string>                                                               ~ Search for an image to view ~</string>
+       <string>                                        ~ Search for an image to view ~</string>
       </property>
      </widget>
      <widget class="QListView" name="listView_2">
@@ -319,13 +450,24 @@
       <property name="geometry">
        <rect>
         <x>20</x>
-        <y>470</y>
-        <width>750</width>
-        <height>80</height>
+        <y>490</y>
+        <width>650</width>
+        <height>100</height>
        </rect>
+      </property>
+      <property name="font">
+       <font>
+        <weight>50</weight>
+        <bold>false</bold>
+        <underline>false</underline>
+        <kerning>true</kerning>
+       </font>
       </property>
       <property name="layoutDirection">
        <enum>Qt::LeftToRight</enum>
+      </property>
+      <property name="autoFillBackground">
+       <bool>true</bool>
       </property>
       <property name="editTriggers">
        <set>QAbstractItemView::NoEditTriggers</set>
@@ -342,6 +484,9 @@
       <property name="alternatingRowColors">
        <bool>false</bool>
       </property>
+      <property name="selectionMode">
+       <enum>QAbstractItemView::NoSelection</enum>
+      </property>
       <property name="verticalScrollMode">
        <enum>QAbstractItemView::ScrollPerPixel</enum>
       </property>
@@ -349,7 +494,7 @@
        <enum>QAbstractItemView::ScrollPerPixel</enum>
       </property>
       <property name="gridStyle">
-       <enum>Qt::DashDotLine</enum>
+       <enum>Qt::SolidLine</enum>
       </property>
       <property name="wordWrap">
        <bool>false</bool>
@@ -357,11 +502,26 @@
       <property name="cornerButtonEnabled">
        <bool>false</bool>
       </property>
+      <attribute name="horizontalHeaderCascadingSectionResizes">
+       <bool>false</bool>
+      </attribute>
+      <attribute name="horizontalHeaderMinimumSectionSize">
+       <number>80</number>
+      </attribute>
+      <attribute name="horizontalHeaderDefaultSectionSize">
+       <number>80</number>
+      </attribute>
       <attribute name="horizontalHeaderStretchLastSection">
        <bool>false</bool>
       </attribute>
       <attribute name="verticalHeaderVisible">
        <bool>false</bool>
+      </attribute>
+      <attribute name="verticalHeaderMinimumSectionSize">
+       <number>30</number>
+      </attribute>
+      <attribute name="verticalHeaderDefaultSectionSize">
+       <number>40</number>
       </attribute>
      </widget>
      <widget class="QLabel" name="label_3">
@@ -377,6 +537,29 @@
        <string>Camera Make</string>
       </property>
      </widget>
+     <widget class="QWebEngineView" name="mView_2" native="true">
+      <property name="geometry">
+       <rect>
+        <x>700</x>
+        <y>9</y>
+        <width>370</width>
+        <height>580</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_8">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>470</y>
+        <width>111</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Image Data</string>
+      </property>
+     </widget>
     </widget>
    </widget>
   </widget>
@@ -385,13 +568,21 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>796</width>
+     <width>1093</width>
      <height>21</height>
     </rect>
    </property>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>QWebEngineView</class>
+   <extends>QWidget</extends>
+   <header>qwebengineview.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>
