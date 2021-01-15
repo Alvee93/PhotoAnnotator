@@ -213,10 +213,10 @@ QSqlQuery DbManager::getAllMakes()
     query.prepare("SELECT DISTINCT make FROM images");
     success2 = query.exec();
     if(!success2){
-        qDebug() << "Fetching metadata failed: " << query.lastError();
+        qDebug() << "Fetching all make failed: " << query.lastError();
     }
     else{
-        //qDebug() << "Success fetching make data.";
+        //qDebug() << "Success fetching all make data.";
     }
 
     return query;
@@ -227,13 +227,81 @@ QSqlQuery DbManager::getAllDaylights()
     QSqlQuery query;
     bool success2 = false;
 
-    query.prepare("SELECT DISTINCT make FROM images");
+    query.prepare("SELECT DISTINCT daylight_status FROM images");
     success2 = query.exec();
     if(!success2){
-        qDebug() << "Fetching metadata failed: " << query.lastError();
+        qDebug() << "Fetching all daylight_status failed: " << query.lastError();
     }
     else{
-        //qDebug() << "Success fetching make data.";
+        //qDebug() << "Success fetching all daylight_status data.";
+    }
+
+    return query;
+}
+
+QSqlQuery DbManager::getAllWeathers()
+{
+    QSqlQuery query;
+    bool success2 = false;
+
+    query.prepare("SELECT DISTINCT weather_status FROM images");
+    success2 = query.exec();
+    if(!success2){
+        qDebug() << "Fetching all weather_status failed: " << query.lastError();
+    }
+    else{
+        //qDebug() << "Success fetching all daylight_status data.";
+    }
+
+    return query;
+}
+
+QSqlQuery DbManager::getAllLocations()
+{
+    QSqlQuery query;
+    bool success2 = false;
+
+    query.prepare("SELECT DISTINCT location FROM images");
+    success2 = query.exec();
+    if(!success2){
+        qDebug() << "Fetching all location failed: " << query.lastError();
+    }
+    else{
+        //qDebug() << "Success fetching all location data.";
+    }
+
+    return query;
+}
+
+QSqlQuery DbManager::getAllPersons()
+{
+    QSqlQuery query;
+    bool success2 = false;
+
+    query.prepare("SELECT DISTINCT person_tags FROM images");
+    success2 = query.exec();
+    if(!success2){
+        qDebug() << "Fetching all location failed: " << query.lastError();
+    }
+    else{
+        //qDebug() << "Success fetching all location data.";
+    }
+
+    return query;
+}
+
+QSqlQuery DbManager::getAllEvents()
+{
+    QSqlQuery query;
+    bool success2 = false;
+
+    query.prepare("SELECT DISTINCT event FROM images");
+    success2 = query.exec();
+    if(!success2){
+        qDebug() << "Fetching all event failed: " << query.lastError();
+    }
+    else{
+        //qDebug() << "Success fetching all event data.";
     }
 
     return query;
@@ -265,20 +333,37 @@ string DbManager::getDatetimeLatLongData(QString image_path)
     return raw_data;
 }
 
-QSqlQuery DbManager::getPathsFromMake(QString make)
+QSqlQuery DbManager::getPathsFromAttributes(QString make, QString daylight, QString weather, QString location, QString person, QString event)
 {
     QSqlQuery query;
-    bool success2 = false;
+    bool success = false;
+    QString query_text = "SELECT path FROM images WHERE 1 = 1";
 
-    query.prepare("SELECT path FROM images WHERE make = (:make)");
-    query.bindValue(":make", make.toUtf8().constData());
+    if(!make.isEmpty()) query_text += " AND make = (:make)";
+    if(!daylight.isEmpty()) query_text += " AND daylight_status = (:daylight_status)";
+    if(!weather.isEmpty()) query_text += " AND weather_status = (:weather_status)";
+    if(!location.isEmpty()) query_text += " AND location = (:location)";
+    if(!person.isEmpty()) query_text += " AND person_tags = (:person_tags)";
+    if(!event.isEmpty()) query_text += " AND event = (:event)";
 
-    success2 = query.exec();
-    if(!success2){
-        qDebug() << "Fetching metadata failed: " << query.lastError();
+
+    query.prepare(query_text);
+
+    if(!make.isEmpty()) query.bindValue(":make", make.toUtf8().constData());
+    if(!daylight.isEmpty()) query.bindValue(":daylight_status", daylight.toUtf8().constData());
+    if(!weather.isEmpty()) query.bindValue(":weather_status", weather.toUtf8().constData());
+    if(!location.isEmpty()) query.bindValue(":location", location.toUtf8().constData());
+    if(!person.isEmpty()) query.bindValue(":person_tags", person.toUtf8().constData());
+    if(!event.isEmpty()) query.bindValue(":event", event.toUtf8().constData());
+
+    success = query.exec();
+    if(!success)
+    {
+        qDebug() << "Fetching Attribute metadata failed: " << query.lastError();
     }
-    else{
-        //qDebug() << "Success fetching make data.";
+    else
+    {
+        //qDebug() << "Success Attribute make data.";
     }
 
     return query;
@@ -296,7 +381,8 @@ QSqlQuery DbManager::getOrientationFromPath(QString image_path)
     if(!success2){
         qDebug() << "Fetching metadata failed: " << query.lastError();
     }
-    else{
+    else
+    {
         //qDebug() << "Success orientation make data.";
     }
 
@@ -312,11 +398,13 @@ QString DbManager::getDaylightFromPath(QString image_path)
     query.bindValue(":path", image_path.toUtf8().constData());
 
     success2 = query.exec();
-    if(!success2){
+    if(!success2)
+    {
         qDebug() << "Fetching daylight failed: " << query.lastError();
         return "N/A";
     }
-    else{
+    else
+    {
         while(query.next()) {
             return query.value(0).toString();
         }
@@ -335,11 +423,13 @@ QString DbManager::getWeatherFromPath(QString image_path)
     query.bindValue(":path", image_path.toUtf8().constData());
 
     success2 = query.exec();
-    if(!success2){
+    if(!success2)
+    {
         qDebug() << "Fetching weather_status failed: " << query.lastError();
         return "N/A";
     }
-    else{
+    else
+    {
         while(query.next()) {
             return query.value(0).toString();
         }
@@ -358,12 +448,14 @@ QString DbManager::getLocationFromPath(QString image_path)
     query.bindValue(":path", image_path.toUtf8().constData());
 
     success2 = query.exec();
-    if(!success2){
+    if(!success2)
+    {
         qDebug() << "Fetching location failed: " << query.lastError();
         return "N/A";
     }
     else{
-        while(query.next()) {
+        while(query.next())
+        {
             return query.value(0).toString();
         }
         //qDebug() << "Success fetching location data.";
@@ -381,11 +473,13 @@ QString DbManager::getPersonTagsFromPath(QString image_path)
     query.bindValue(":path", image_path.toUtf8().constData());
 
     success2 = query.exec();
-    if(!success2){
+    if(!success2)
+    {
         qDebug() << "Fetching person_tags failed: " << query.lastError();
         return "N/A";
     }
-    else{
+    else
+    {
         while(query.next()) {
             return query.value(0).toString();
         }
@@ -404,11 +498,13 @@ QString DbManager::getEventFromPath(QString image_path)
     query.bindValue(":path", image_path.toUtf8().constData());
 
     success2 = query.exec();
-    if(!success2){
+    if(!success2)
+    {
         qDebug() << "Fetching event failed: " << query.lastError();
         return "N/A";
     }
-    else{
+    else
+    {
         while(query.next()) {
             return query.value(0).toString();
         }
@@ -428,7 +524,8 @@ bool DbManager::setDaylightFromPath(QString daylight, QString image_path) const
     query.bindValue(":path", image_path.toUtf8().constData());
     success2 = query.exec();
 
-    if(!success2){
+    if(!success2)
+    {
         qDebug() << "Update daylight failed: " << query.lastError();
         return false;
     }
@@ -448,11 +545,13 @@ bool DbManager::setWeatherFromPath(QString weather, QString image_path)
     query.bindValue(":path", image_path.toUtf8().constData());
     success2 = query.exec();
 
-    if(!success2){
+    if(!success2)
+    {
         qDebug() << "Update weather failed: " << query.lastError();
         return false;
     }
-    else{
+    else
+    {
         //qDebug() << "Success updating weather.";
     }
     return true;
@@ -468,11 +567,13 @@ bool DbManager::setLocationFromPath(QString location, QString image_path)
     query.bindValue(":path", image_path.toUtf8().constData());
     success2 = query.exec();
 
-    if(!success2){
+    if(!success2)
+    {
         qDebug() << "Update location failed: " << query.lastError();
         return false;
     }
-    else{
+    else
+    {
         //qDebug() << "Success updating location.";
     }
     return true;
@@ -488,11 +589,13 @@ bool DbManager::setPersonFromPath(QString p_tags, QString image_path) const
     query.bindValue(":path", image_path.toUtf8().constData());
     success2 = query.exec();
 
-    if(!success2){
+    if(!success2)
+    {
         qDebug() << "Update person_tags failed: " << query.lastError();
         return false;
     }
-    else{
+    else
+    {
         //qDebug() << "Success updating person_tags.";
     }
     return true;
@@ -508,11 +611,13 @@ bool DbManager::setEventFromPath(QString event, QString image_path)
     query.bindValue(":path", image_path.toUtf8().constData());
     success2 = query.exec();
 
-    if(!success2){
+    if(!success2)
+    {
         qDebug() << "Update event failed: " << query.lastError();
         return false;
     }
-    else{
+    else
+    {
         //qDebug() << "Success updating event.";
     }
     return true;

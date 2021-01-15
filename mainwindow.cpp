@@ -13,6 +13,8 @@ double Glat=0, Glong=0;
 
 std::string DateTime;
 
+QString comboMake, comboDaylight, comboWeather, comboLocation, comboPerson, comboEvent;
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -42,7 +44,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     db.createTable();
 
-    show_comboBox_make();
+    show_allComboBoxes();
 }
 
 MainWindow::~MainWindow()
@@ -161,7 +163,7 @@ void MainWindow::on_pushButton_clicked()
             show_image_result();
 
             // Update the combobox data
-            show_comboBox_make();
+            show_allComboBoxes();
     }
 
     else{
@@ -192,7 +194,7 @@ void MainWindow::on_pushButton_update_clicked()
     else ui->statusbar->showMessage("Data update failed!", 5000);
 
     // Update the combobox data
-    show_comboBox_make();
+    show_allComboBoxes();
 }
 
 /* This function gets the image metadata from db and shows in tab_2 table */
@@ -212,13 +214,19 @@ void MainWindow::show_image_metadata()
     ui->tableView->setModel(modal);
 }
 
-/* This function populates the listView_2 based on what is selected in the comboBox_make for the first time the app is launched */
+/* This function populates the listView_2 based on what is selected in the comboBox_make image is added into library */
 void MainWindow::show_image_result()
 {
     // Get all image-paths from db based on make
     QString make = ui->comboBox_make->currentText();
+    QString daylight = ui->comboBox_daylight->currentText();
+    QString weather = ui->comboBox_weather->currentText();
+    QString location = ui->comboBox_location->currentText();
+    QString person = ui->comboBox_person->currentText();
+    QString event = ui->comboBox_event->currentText();
+
     QSqlQueryModel *modal = new QSqlQueryModel;
-    QSqlQuery query = db.getPathsFromMake(make);
+    QSqlQuery query = db.getPathsFromAttributes(make, daylight, weather, location, person, event);
     bool success = query.exec();
 
     if(!success){
@@ -228,10 +236,11 @@ void MainWindow::show_image_result()
     // Set the modal data & populate this on the listView_2
     modal->setQuery(query);
     ui->listView_2->setModel(modal);
+    ui->statusbar->showMessage("Total items = " + QString(modal->rowCount()), 4000);
 }
 
 /* This function popilates the comboBox_make with 'make' information */
-void MainWindow::show_comboBox_make()
+void MainWindow::show_allComboBoxes()
 {
     // Get all makes from db
     QSqlQueryModel *modal = new QSqlQueryModel;
@@ -239,11 +248,74 @@ void MainWindow::show_comboBox_make()
     bool success = query.exec();
 
     if(!success){
-        qDebug() << "Fetching make failed: " << query.lastError();
+        qDebug() << "Fetching makes failed: " << query.lastError();
     }
 
     modal->setQuery(query);
+    //modal->insertRow(0);
+    //qDebug() << "modal->rowCount() = " << modal->rowCount();
     ui->comboBox_make->setModel(modal);
+    //ui->comboBox_make->addItem("---");
+
+    // Get all daylights from db
+    QSqlQueryModel *modal_d = new QSqlQueryModel;
+    query = db.getAllDaylights();
+    success = query.exec();
+
+    if(!success){
+        qDebug() << "Fetching daylights failed: " << query.lastError();
+    }
+
+    modal_d->setQuery(query);
+    ui->comboBox_daylight->setModel(modal_d);
+
+    // Get all weathers from db
+    QSqlQueryModel *modal_w = new QSqlQueryModel;
+    query = db.getAllWeathers();
+    success = query.exec();
+
+    if(!success){
+        qDebug() << "Fetching weathers failed: " << query.lastError();
+    }
+
+    modal_w->setQuery(query);
+    ui->comboBox_weather->setModel(modal_w);
+
+    // Get all locations from db
+    QSqlQueryModel *modal_l = new QSqlQueryModel;
+    query = db.getAllLocations();
+    success = query.exec();
+
+    if(!success){
+        qDebug() << "Fetching locations failed: " << query.lastError();
+    }
+
+    modal_l->setQuery(query);
+    ui->comboBox_location->setModel(modal_l);
+
+    // Get all persons from db
+    QSqlQueryModel *modal_p = new QSqlQueryModel;
+    query = db.getAllPersons();
+    success = query.exec();
+
+    if(!success){
+        qDebug() << "Fetching persons failed: " << query.lastError();
+    }
+
+    modal_p->setQuery(query);
+    ui->comboBox_person->setModel(modal_p);
+
+    // Get all events from db
+    QSqlQueryModel *modal_e = new QSqlQueryModel;
+    query = db.getAllEvents();
+    success = query.exec();
+
+    if(!success){
+        qDebug() << "Fetching events failed: " << query.lastError();
+    }
+
+    modal_e->setQuery(query);
+    ui->comboBox_event->setModel(modal_e);
 }
 
 /* This function extracts the Exif information from image and stores them in db */
@@ -365,41 +437,6 @@ void MainWindow::extract_exif(QString imgPath)
     */
 }
 
-/* Shows the (paths of) images on listView_2 depending on what is selected on the comboBox_make for camera_make */
-void MainWindow::on_comboBox_make_currentIndexChanged(const QString &arg1) //const QString &arg1
-{
-    // Get all image-paths from db for make
-    QSqlQueryModel *modal = new QSqlQueryModel;
-    QString make = ui->comboBox_make->currentText();
-    QSqlQuery query = db.getPathsFromMake(make);
-    bool success = query.exec();
-
-    if (query.exec())
-    {
-       if (query.next())
-       {
-            modal->setQuery(query);
-            ui->listView_2->setModel(modal);   // it exists
-            //ui->listView_2->setModel(fileModel->setRootPath();
-            //ui->listView_2->setRootIndex(fileModel->setRootPath(sPath));
-            //qDebug() << modal;
-       }
-    }
-    else if(!success){
-        qDebug() << "Fetching result failed: " << query.lastError();
-    }
-
-
-
-    /*QStandardItemModel *model = new QStandardItemModel(this);
-    ui->listView_2->setModel(model);
-    while(query.next()) {
-        model->appendRow(new QStandardItem(QIcon(query.value(0).toString()), "teststr"));
-        //qDebug() << query.value(0).toString();
-    }*/
-    //qDebug() << "model->item(0, 0) = " << model->item(0, 0)->text();
-}
-
 /* When user selects a photo from the listView_2, the image is loaded in imgLabel_3 & respective data is populated in tableView_2 */
 void MainWindow::on_listView_2_activated(const QModelIndex &index)
 {
@@ -425,15 +462,15 @@ void MainWindow::on_listView_2_activated(const QModelIndex &index)
 
         //Reduce the size of imgLabel_3 and tableView_2 if there is map data
         ui->imgLabel_3->setFixedSize(400, ui->imgLabel_3->height());
-        ui->imgLabel_3->move(250, ui->imgLabel_3->pos().y());
-        ui->tableView_2->setFixedSize(650, 100);
+        ui->imgLabel_3->move(490, ui->imgLabel_3->pos().y());
+        ui->tableView_2->setFixedSize(800, 100);
     }
     else {
         //If there is no map data, set mView_2 as invisible and increase the size of imgLabel_3 and tableView_2
         ui->mView_2->setVisible(0);
         ui->imgLabel_3->setFixedSize(750, ui->imgLabel_3->height()); //setFixedSize(800, 391)
-        ui->imgLabel_3->move(350, ui->imgLabel_3->pos().y());
-        ui->tableView_2->setFixedSize(1040, 100);
+        ui->imgLabel_3->move(550, ui->imgLabel_3->pos().y());
+        ui->tableView_2->setFixedSize(1180, 100);
     }
     //qDebug() << "Glat = " << Glat;
 
@@ -512,10 +549,96 @@ void MainWindow::extractDatetimeLatLongData(string s)
     }
 }
 
+/* Deletes the selected image on listView_2 */
 void MainWindow::on_pushButton_remImage_clicked()
 {
     if(!listView_2_image.isNull()) db.removeImg(listView_2_image);
-    show_comboBox_make();
+    show_allComboBoxes();
     ui->statusbar->showMessage("Image successfully deleted from app!", 2000);
     //ui->listView_2->reset();
+}
+
+void MainWindow::updateListViewResult()
+{
+    QSqlQueryModel *modal = new QSqlQueryModel;
+        QSqlQuery query = db.getPathsFromAttributes(comboMake, comboDaylight, comboWeather, comboLocation, comboPerson, comboEvent);
+
+        bool success = query.exec();
+
+        if (query.exec())
+        {
+            modal->setQuery(query);
+            ui->listView_2->setModel(modal);   // it exists
+            //ui->listView_2->setModel(fileModel->setRootPath();
+            //ui->listView_2->setRootIndex(fileModel->setRootPath(sPath));
+            //qDebug() << modal;
+        }
+        else if(!success){
+            qDebug() << "Fetching 'currentIndexChanged' failed: " << query.lastError();
+        }
+
+        ui->statusbar->showMessage(QString(modal->rowCount()), 4000);
+
+        /*QStandardItemModel *model = new QStandardItemModel(this);
+        ui->listView_2->setModel(model);
+        while(query.next()) {
+            model->appendRow(new QStandardItem(QIcon(query.value(0).toString()), "teststr"));
+            //qDebug() << query.value(0).toString();
+        }*/
+        //qDebug() << "model->item(0, 0) = " << model->item(0, 0)->text();
+}
+
+/* Shows the (paths of) images on listView_2 depending on what is selected on the comboBox_make for camera_make */
+void MainWindow::on_comboBox_make_currentIndexChanged(const QString &arg1) //const QString &arg1
+{
+    // Get all image-paths from db for makes
+    comboMake = ui->comboBox_make->currentText();
+
+    // Update the listView_2
+    updateListViewResult();
+}
+
+void MainWindow::on_comboBox_daylight_currentIndexChanged(const QString &arg1)
+{
+    // Get all image-paths from db for daylights
+    comboDaylight = ui->comboBox_daylight->currentText();
+
+    // Update the listView_2
+    updateListViewResult();
+}
+
+void MainWindow::on_comboBox_weather_currentIndexChanged(const QString &arg1)
+{
+    // Get all image-paths from db for weathers
+    comboWeather = ui->comboBox_weather->currentText();
+
+    // Update the listView_2
+    updateListViewResult();
+}
+
+void MainWindow::on_comboBox_location_currentIndexChanged(const QString &arg1)
+{
+    // Get all image-paths from db for locations
+    comboLocation = ui->comboBox_location->currentText();
+
+    // Update the listView_2
+    updateListViewResult();
+}
+
+void MainWindow::on_comboBox_person_currentIndexChanged(const QString &arg1)
+{
+    // Get all image-paths from db for persons
+    comboPerson = ui->comboBox_person->currentText();
+
+    // Update the listView_2
+    updateListViewResult();
+}
+
+void MainWindow::on_comboBox_event_currentIndexChanged(const QString &arg1)
+{
+    // Get all image-paths from db for events
+    comboEvent = ui->comboBox_event->currentText();
+
+    // Update the listView_2
+    updateListViewResult();
 }

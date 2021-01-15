@@ -53,9 +53,7 @@ private slots:
 
     void show_image_metadata();
     void show_image_result();
-    void show_comboBox_make();
-
-    void on_comboBox_make_currentIndexChanged(const QString &arg1);
+    void show_allComboBoxes();
 
     void on_listView_2_activated(const QModelIndex &index);
 
@@ -66,6 +64,18 @@ private slots:
     void on_pushButton_update_clicked();
 
     void on_pushButton_remImage_clicked();
+
+    void updateListViewResult();
+    void on_comboBox_make_currentIndexChanged(const QString &arg1);
+    void on_comboBox_daylight_currentIndexChanged(const QString &arg1);
+
+    void on_comboBox_weather_currentIndexChanged(const QString &arg1);
+
+    void on_comboBox_location_currentIndexChanged(const QString &arg1);
+
+    void on_comboBox_person_currentIndexChanged(const QString &arg1);
+
+    void on_comboBox_event_currentIndexChanged(const QString &arg1);
 
 private:
     Ui::MainWindow *ui;

@@ -84,6 +84,37 @@ public:
     QSqlQuery getAllMakes();
 
     /**
+     * @brief Get all daylights of images
+     * @return QSqlQuery data for selected image
+     */
+    QSqlQuery getAllDaylights();
+
+    /**
+     * @brief Get all weathers of images
+     * @return QSqlQuery data for selected image
+     */
+    QSqlQuery getAllWeathers();
+
+    /**
+     * @brief Get all locations of images
+     * @return QSqlQuery data for selected image
+     */
+    QSqlQuery getAllLocations();
+
+    /**
+     * @brief Get all person_tags of images
+     * @return QSqlQuery data for selected image
+     */
+    QSqlQuery getAllPersons();
+
+    /**
+     * @brief Get all events of images
+     * @return QSqlQuery data for selected image
+     */
+    QSqlQuery getAllEvents();
+
+
+    /**
      * @brief Get o_datetime, latitude, longitude from image
      * @param val - image path for the data.
      * @return lat, long & original_datetime
@@ -91,11 +122,11 @@ public:
     string getDatetimeLatLongData(QString image_path);
 
     /**
-     * @brief Get all paths of images depending on make
-     * @param make - image make for the data.
+     * @brief Get all paths of images depending on make, daylight, weather, location, person & event
+     * @param make - image make for the data, etc..
      * @return QSqlQuery data for selected image
      */
-    QSqlQuery getPathsFromMake(QString make);
+    QSqlQuery getPathsFromAttributes(QString make, QString daylight, QString weather, QString location, QString person, QString event);
 
     /**
      * @brief Get orientation of specific image
