@@ -18,13 +18,18 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>10</y>
+      <y>0</y>
       <width>1080</width>
-      <height>621</height>
+      <height>631</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>2</number>
     </property>
     <widget class="QWidget" name="tab">
      <attribute name="title">
@@ -49,6 +54,11 @@
         <height>30</height>
        </rect>
       </property>
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
       <property name="text">
        <string>Add to Library</string>
       </property>
@@ -61,6 +71,11 @@
         <width>100</width>
         <height>30</height>
        </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
       </property>
       <property name="text">
        <string>TBA</string>
@@ -75,6 +90,11 @@
         <height>30</height>
        </rect>
       </property>
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
       <property name="text">
        <string>TBA</string>
       </property>
@@ -87,6 +107,11 @@
         <width>100</width>
         <height>30</height>
        </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
       </property>
       <property name="text">
        <string>Quick Browse</string>
@@ -144,6 +169,11 @@
         <height>390</height>
        </rect>
       </property>
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
       <property name="text">
        <string>                                                                                ~ Browse to view an image ~</string>
       </property>
@@ -156,6 +186,11 @@
         <width>101</width>
         <height>16</height>
        </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
       </property>
       <property name="text">
        <string>Images (List View)</string>
@@ -175,8 +210,13 @@
         <height>460</height>
        </rect>
       </property>
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
       <property name="text">
-       <string>                                                                                                                    ~ Browse to view an image ~</string>
+       <string>                                                           ~ Browse to view an image ~</string>
       </property>
      </widget>
      <widget class="QTableView" name="tableView">
@@ -185,8 +225,13 @@
         <x>20</x>
         <y>500</y>
         <width>1040</width>
-        <height>80</height>
+        <height>90</height>
        </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
       </property>
       <property name="layoutDirection">
        <enum>Qt::LeftToRight</enum>
@@ -210,6 +255,11 @@
         <height>30</height>
        </rect>
       </property>
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
      </widget>
      <widget class="QLabel" name="label">
       <property name="geometry">
@@ -219,6 +269,11 @@
         <width>100</width>
         <height>20</height>
        </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
       </property>
       <property name="text">
        <string>Person Tags</string>
@@ -233,6 +288,11 @@
         <height>30</height>
        </rect>
       </property>
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
      </widget>
      <widget class="QLabel" name="label_4">
       <property name="geometry">
@@ -242,6 +302,11 @@
         <width>100</width>
         <height>20</height>
        </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
       </property>
       <property name="text">
        <string>Location</string>
@@ -256,6 +321,11 @@
         <height>30</height>
        </rect>
       </property>
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
      </widget>
      <widget class="QLabel" name="label_5">
       <property name="geometry">
@@ -265,6 +335,11 @@
         <width>100</width>
         <height>20</height>
        </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
       </property>
       <property name="text">
        <string>Weather</string>
@@ -279,6 +354,11 @@
         <height>30</height>
        </rect>
       </property>
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
      </widget>
      <widget class="QLabel" name="label_6">
       <property name="geometry">
@@ -288,6 +368,11 @@
         <width>100</width>
         <height>20</height>
        </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
       </property>
       <property name="text">
        <string>Daylight</string>
@@ -305,6 +390,11 @@
         <height>30</height>
        </rect>
       </property>
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
       <property name="text">
        <string>Update</string>
       </property>
@@ -317,6 +407,11 @@
         <width>111</width>
         <height>21</height>
        </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
       </property>
       <property name="text">
        <string>Image Data</string>
@@ -331,6 +426,11 @@
         <height>30</height>
        </rect>
       </property>
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
      </widget>
      <widget class="QLabel" name="label_9">
       <property name="geometry">
@@ -340,6 +440,11 @@
         <width>100</width>
         <height>20</height>
        </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
       </property>
       <property name="text">
        <string>Event</string>
@@ -359,6 +464,11 @@
         <height>22</height>
        </rect>
       </property>
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
       <property name="currentText">
        <string/>
       </property>
@@ -372,6 +482,11 @@
         <height>440</height>
        </rect>
       </property>
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
       <property name="text">
        <string>                                        ~ Search for an image to view ~</string>
       </property>
@@ -380,9 +495,9 @@
       <property name="geometry">
        <rect>
         <x>20</x>
-        <y>140</y>
+        <y>320</y>
         <width>211</width>
-        <height>311</height>
+        <height>131</height>
        </rect>
       </property>
       <property name="horizontalScrollBarPolicy">
@@ -395,22 +510,28 @@
        <bool>false</bool>
       </property>
       <property name="dragDropMode">
-       <enum>QAbstractItemView::DragDrop</enum>
+       <enum>QAbstractItemView::NoDragDrop</enum>
       </property>
       <property name="alternatingRowColors">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <property name="iconSize">
        <size>
-        <width>100</width>
-        <height>100</height>
+        <width>50</width>
+        <height>50</height>
        </size>
+      </property>
+      <property name="textElideMode">
+       <enum>Qt::ElideLeft</enum>
+      </property>
+      <property name="verticalScrollMode">
+       <enum>QAbstractItemView::ScrollPerPixel</enum>
       </property>
       <property name="horizontalScrollMode">
        <enum>QAbstractItemView::ScrollPerPixel</enum>
       </property>
       <property name="movement">
-       <enum>QListView::Free</enum>
+       <enum>QListView::Static</enum>
       </property>
       <property name="flow">
        <enum>QListView::LeftToRight</enum>
@@ -419,28 +540,40 @@
        <bool>true</bool>
       </property>
       <property name="resizeMode">
-       <enum>QListView::Fixed</enum>
+       <enum>QListView::Adjust</enum>
+      </property>
+      <property name="layoutMode">
+       <enum>QListView::SinglePass</enum>
       </property>
       <property name="spacing">
-       <number>20</number>
+       <number>50</number>
       </property>
       <property name="gridSize">
        <size>
-        <width>100</width>
-        <height>100</height>
+        <width>200</width>
+        <height>75</height>
        </size>
       </property>
       <property name="viewMode">
        <enum>QListView::IconMode</enum>
       </property>
+      <property name="modelColumn">
+       <number>0</number>
+      </property>
       <property name="uniformItemSizes">
-       <bool>true</bool>
+       <bool>false</bool>
       </property>
       <property name="batchSize">
-       <number>80</number>
+       <number>1</number>
       </property>
       <property name="wordWrap">
        <bool>true</bool>
+      </property>
+      <property name="selectionRectVisible">
+       <bool>true</bool>
+      </property>
+      <property name="itemAlignment">
+       <set>Qt::AlignCenter</set>
       </property>
      </widget>
      <widget class="QTableView" name="tableView_2">
@@ -450,13 +583,14 @@
       <property name="geometry">
        <rect>
         <x>20</x>
-        <y>490</y>
+        <y>500</y>
         <width>650</width>
-        <height>100</height>
+        <height>90</height>
        </rect>
       </property>
       <property name="font">
        <font>
+        <pointsize>10</pointsize>
         <weight>50</weight>
         <bold>false</bold>
         <underline>false</underline>
@@ -533,6 +667,11 @@
         <height>16</height>
        </rect>
       </property>
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
       <property name="text">
        <string>Camera Make</string>
       </property>
@@ -556,8 +695,206 @@
         <height>21</height>
        </rect>
       </property>
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
       <property name="text">
        <string>Image Data</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="pushButton_remImage">
+      <property name="geometry">
+       <rect>
+        <x>240</x>
+        <y>470</y>
+        <width>151</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Remove Image</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_10">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>60</y>
+        <width>211</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Daylight</string>
+      </property>
+     </widget>
+     <widget class="QComboBox" name="comboBox_daylight">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>80</y>
+        <width>211</width>
+        <height>22</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+      <property name="currentText">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_11">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>110</y>
+        <width>211</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Weather</string>
+      </property>
+     </widget>
+     <widget class="QComboBox" name="comboBox_weather">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>130</y>
+        <width>211</width>
+        <height>22</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+      <property name="currentText">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_12">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>160</y>
+        <width>211</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Location</string>
+      </property>
+     </widget>
+     <widget class="QComboBox" name="comboBox_location">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>180</y>
+        <width>211</width>
+        <height>22</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+      <property name="currentText">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_13">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>210</y>
+        <width>211</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Person(s)</string>
+      </property>
+     </widget>
+     <widget class="QComboBox" name="comboBox_person">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>230</y>
+        <width>211</width>
+        <height>22</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+      <property name="currentText">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_14">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>260</y>
+        <width>211</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Event</string>
+      </property>
+     </widget>
+     <widget class="QComboBox" name="comboBox_event">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>280</y>
+        <width>211</width>
+        <height>22</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+      <property name="currentText">
+       <string/>
       </property>
      </widget>
     </widget>

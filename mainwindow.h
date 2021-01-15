@@ -65,6 +65,8 @@ private slots:
 
     void on_pushButton_update_clicked();
 
+    void on_pushButton_remImage_clicked();
+
 private:
     Ui::MainWindow *ui;
     QFileSystemModel *dirModel;

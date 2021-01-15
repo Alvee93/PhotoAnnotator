@@ -71,18 +71,24 @@ public:
     void printAllImages() const;
 
     /**
-     * @brief Get o_datetime, latitude, longitude from image
-     * @param val - image path for the data.
-     * @return lat, long & original_datetime
-     */
-    string getDatetimeLatLongData(QString image_path);
-
-    /**
      * @brief Get all data for image
      * @param image_path - image path for the data.
      * @return QSqlQuery data for selected image
      */
     QSqlQuery getAllData(QString image_path);
+
+    /**
+     * @brief Get all makes of images
+     * @return QSqlQuery data for selected image
+     */
+    QSqlQuery getAllMakes();
+
+    /**
+     * @brief Get o_datetime, latitude, longitude from image
+     * @param val - image path for the data.
+     * @return lat, long & original_datetime
+     */
+    string getDatetimeLatLongData(QString image_path);
 
     /**
      * @brief Get all paths of images depending on make
@@ -132,12 +138,6 @@ public:
      * @return weather data for selected image
      */
     QString getEventFromPath(QString image_path);
-
-    /**
-     * @brief Get all makes of images
-     * @return QSqlQuery data for selected image
-     */
-    QSqlQuery getAllMakes();
 
     /**
      * @brief Updates daylight, weather, location, person_tags & event for of specific image

@@ -160,6 +160,7 @@ void MainWindow::on_pushButton_clicked()
             // Populates the listView_2
             show_image_result();
 
+            // Update the combobox data
             show_comboBox_make();
     }
 
@@ -189,6 +190,9 @@ void MainWindow::on_pushButton_update_clicked()
             & db.setLocationFromPath(location, absFilePath)
             & db.setEventFromPath(event, absFilePath)) ui->statusbar->showMessage("Data updated!", 5000);
     else ui->statusbar->showMessage("Data update failed!", 5000);
+
+    // Update the combobox data
+    show_comboBox_make();
 }
 
 /* This function gets the image metadata from db and shows in tab_2 table */
@@ -400,6 +404,7 @@ void MainWindow::on_comboBox_make_currentIndexChanged(const QString &arg1) //con
 void MainWindow::on_listView_2_activated(const QModelIndex &index)
 {
     QString image_path = ui->listView_2->model()->data(index).toString();
+    listView_2_image = image_path;
     //qDebug() << "val = " << val; //val
     //qDebug() << "index = " << ui->listView_2->model()->index(0, 0).data().toMap().value("name").toString(); //index
 
@@ -505,4 +510,12 @@ void MainWindow::extractDatetimeLatLongData(string s)
         i+=1;
         s.erase(0, pos + delimiter.length());
     }
+}
+
+void MainWindow::on_pushButton_remImage_clicked()
+{
+    if(!listView_2_image.isNull()) db.removeImg(listView_2_image);
+    show_comboBox_make();
+    ui->statusbar->showMessage("Image successfully deleted from app!", 2000);
+    //ui->listView_2->reset();
 }

@@ -164,7 +164,7 @@ bool DbManager::removeImg(const QString& img)
     }
     else
     {
-        qDebug() << "Remove image failed: person doesnt exist";
+        qDebug() << "Remove image failed: image doesnt exist";
     }
 
     return success;
@@ -180,6 +180,63 @@ void DbManager::printAllImages() const
         QString name = query.value(idName).toString();
         qDebug() << "===" << name;
     }
+}
+
+QSqlQuery DbManager::getAllData(QString image_path)
+{
+    QSqlQuery query2;
+    bool success2 = false;
+
+    query2.prepare("SELECT make, model, software, bps, width, height, description, orientation, copyright, datetime, "
+                  "o_datetime, d_datetime, subsecond, exposure, f_stop, iso, s_distance, e_bias, flash, metering_mode, "
+                  "focal_length, focal_length_35mm, latitude, longitude, altitude, min_focal_length, max_focal_length, "
+                  "min_f_stop, max_f_stop, lens_make, lens_model, daylight_status, weather_status, location, person_tags, event"
+                  " FROM images WHERE path = (:path2)");
+    query2.bindValue(":path2", image_path.toUtf8().constData());
+
+    success2 = query2.exec();
+    if(!success2){
+        qDebug() << "Fetching metadata failed: " << query2.lastError();
+    }
+    else{
+        //qDebug() << "Success fetching all data.";
+    }
+
+    return query2;
+}
+
+QSqlQuery DbManager::getAllMakes()
+{
+    QSqlQuery query;
+    bool success2 = false;
+
+    query.prepare("SELECT DISTINCT make FROM images");
+    success2 = query.exec();
+    if(!success2){
+        qDebug() << "Fetching metadata failed: " << query.lastError();
+    }
+    else{
+        //qDebug() << "Success fetching make data.";
+    }
+
+    return query;
+}
+
+QSqlQuery DbManager::getAllDaylights()
+{
+    QSqlQuery query;
+    bool success2 = false;
+
+    query.prepare("SELECT DISTINCT make FROM images");
+    success2 = query.exec();
+    if(!success2){
+        qDebug() << "Fetching metadata failed: " << query.lastError();
+    }
+    else{
+        //qDebug() << "Success fetching make data.";
+    }
+
+    return query;
 }
 
 string DbManager::getDatetimeLatLongData(QString image_path)
@@ -206,29 +263,6 @@ string DbManager::getDatetimeLatLongData(QString image_path)
     }
 
     return raw_data;
-}
-
-QSqlQuery DbManager::getAllData(QString image_path)
-{
-    QSqlQuery query2;
-    bool success2 = false;
-
-    query2.prepare("SELECT make, model, software, bps, width, height, description, orientation, copyright, datetime, "
-                  "o_datetime, d_datetime, subsecond, exposure, f_stop, iso, s_distance, e_bias, flash, metering_mode, "
-                  "focal_length, focal_length_35mm, latitude, longitude, altitude, min_focal_length, max_focal_length, "
-                  "min_f_stop, max_f_stop, lens_make, lens_model, daylight_status, weather_status, location, person_tags, event"
-                  " FROM images WHERE path = (:path2)");
-    query2.bindValue(":path2", image_path.toUtf8().constData());
-
-    success2 = query2.exec();
-    if(!success2){
-        qDebug() << "Fetching metadata failed: " << query2.lastError();
-    }
-    else{
-        //qDebug() << "Success fetching all data.";
-    }
-
-    return query2;
 }
 
 QSqlQuery DbManager::getPathsFromMake(QString make)
@@ -482,23 +516,6 @@ bool DbManager::setEventFromPath(QString event, QString image_path)
         //qDebug() << "Success updating event.";
     }
     return true;
-}
-
-QSqlQuery DbManager::getAllMakes()
-{
-    QSqlQuery query;
-    bool success2 = false;
-
-    query.prepare("SELECT DISTINCT make FROM images");
-    success2 = query.exec();
-    if(!success2){
-        qDebug() << "Fetching metadata failed: " << query.lastError();
-    }
-    else{
-        //qDebug() << "Success fetching make data.";
-    }
-
-    return query;
 }
 
 bool DbManager::removeAllImages()
