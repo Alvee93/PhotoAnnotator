@@ -8,6 +8,7 @@ DbManager db(db_path);
 DayLightClass dl_obj;
 WeatherClass weather_obj;
 GmapClass gmap_obj;
+GCalendar gc_obj;
 
 double Glat=0, Glong=0;
 
@@ -45,6 +46,8 @@ MainWindow::MainWindow(QWidget *parent)
     db.createTable();
 
     show_allComboBoxes();
+
+    ui->textEdit_device_code->setVisible(false);
 }
 
 MainWindow::~MainWindow()
@@ -214,7 +217,7 @@ void MainWindow::show_image_metadata()
     ui->tableView->setModel(modal);
 }
 
-/* This function populates the listView_2 based on what is selected in the comboBox_make image is added into library */
+/* This function populates the listView_2 when an image is added into library */
 void MainWindow::show_image_result()
 {
     // Get all image-paths from db based on make
@@ -641,4 +644,39 @@ void MainWindow::on_comboBox_event_currentIndexChanged(const QString &arg1)
 
     // Update the listView_2
     updateListViewResult();
+}
+
+/* Login to Google to grant permission before fetching event data. */
+void MainWindow::on_pushButton_glogin_clicked()
+{
+    QString user_code = gc_obj.gLogin();
+    ui->statusbar->showMessage(user_code, 10000);
+    ui->textEdit_device_code->setVisible(true);
+    ui->textEdit_device_code->setText(user_code);
+
+    // Web view Portion
+    QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+    ui->mView_login->setAttribute( Qt::WA_DeleteOnClose );      // delete object on closing or exiting
+    QWebEngineProfile::defaultProfile()->setHttpUserAgent("Mozilla/5.0 (X11; Linux x86_64; rv:57.0) Gecko/20100101 Firefox/57.0");
+    ui->mView_login->load(QUrl("https://www.google.com/device"));
+    ui->mView_login->setZoomFactor(0.85);
+    ui->mView_login->resize(ui->mView_login->width(), ui->mView_login->height());
+    ui->mView_login->show();
+}
+
+/* Fetch event info */
+void MainWindow::on_pushButton_get_event_clicked()
+{
+    ui->textEdit_device_code->setVisible(false);
+
+    extractDatetimeLatLongData(db.getDatetimeLatLongData(absFilePath));
+    //qDebug() << "DateTime = " << QString::fromStdString(DateTime);
+    QString date_time(QString::fromStdString(DateTime));
+    QString date = date_time.left(10); //'date' contains this format- "2019:09:04"
+    date.replace(":", "-"); //'date' contains this format- "2019-09-04"
+    qDebug() << "date = " << date;
+
+    gc_obj.getAccessToken();    // first need to call this for the system to get the access token, when app is restarted
+    QString g_calendar_event = gc_obj.getEvent(date);
+    ui->textEdit_event->setText(g_calendar_event);
 }

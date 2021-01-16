@@ -14,6 +14,7 @@ SOURCES += \
     daylightclass.cpp \
     dbmanager.cpp \
     exif.cpp \
+    gcalendar.cpp \
     gmapclass.cpp \
     main.cpp \
     mainwindow.cpp \
@@ -23,6 +24,7 @@ HEADERS += \
     daylightclass.h \
     dbmanager.h \
     exif.h \
+    gcalendar.h \
     gmapclass.h \
     mainwindow.h \
     weatherclass.h

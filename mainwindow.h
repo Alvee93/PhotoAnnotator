@@ -24,8 +24,10 @@
 #include <daylightclass.h>
 #include <weatherclass.h>
 #include <gmapclass.h>
+#include <gcalendar.h>
 
 #include <QWebEngineView>
+#include <QWebEngineProfile>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -76,6 +78,10 @@ private slots:
     void on_comboBox_person_currentIndexChanged(const QString &arg1);
 
     void on_comboBox_event_currentIndexChanged(const QString &arg1);
+
+    void on_pushButton_glogin_clicked();
+
+    void on_pushButton_get_event_clicked();
 
 private:
     Ui::MainWindow *ui;
