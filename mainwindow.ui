@@ -29,7 +29,7 @@
      </font>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>2</number>
     </property>
     <widget class="QWidget" name="tab">
      <attribute name="title">
@@ -460,7 +460,7 @@
        <rect>
         <x>20</x>
         <y>30</y>
-        <width>211</width>
+        <width>150</width>
         <height>22</height>
        </rect>
       </property>
@@ -476,10 +476,10 @@
      <widget class="QLabel" name="imgLabel_3">
       <property name="geometry">
        <rect>
-        <x>490</x>
+        <x>430</x>
         <y>9</y>
-        <width>750</width>
-        <height>440</height>
+        <width>700</width>
+        <height>470</height>
        </rect>
       </property>
       <property name="font">
@@ -494,7 +494,7 @@
      <widget class="QListView" name="listView_2">
       <property name="geometry">
        <rect>
-        <x>240</x>
+        <x>180</x>
         <y>10</y>
         <width>230</width>
         <height>470</height>
@@ -690,7 +690,7 @@
       <property name="geometry">
        <rect>
         <x>20</x>
-        <y>470</y>
+        <y>480</y>
         <width>111</width>
         <height>21</height>
        </rect>
@@ -710,7 +710,7 @@
         <x>20</x>
         <y>410</y>
         <width>151</width>
-        <height>23</height>
+        <height>30</height>
        </rect>
       </property>
       <property name="text">
@@ -740,7 +740,7 @@
        <rect>
         <x>20</x>
         <y>80</y>
-        <width>211</width>
+        <width>150</width>
         <height>22</height>
        </rect>
       </property>
@@ -776,7 +776,7 @@
        <rect>
         <x>20</x>
         <y>130</y>
-        <width>211</width>
+        <width>150</width>
         <height>22</height>
        </rect>
       </property>
@@ -812,7 +812,7 @@
        <rect>
         <x>20</x>
         <y>190</y>
-        <width>211</width>
+        <width>150</width>
         <height>22</height>
        </rect>
       </property>
@@ -848,7 +848,7 @@
        <rect>
         <x>20</x>
         <y>240</y>
-        <width>211</width>
+        <width>150</width>
         <height>22</height>
        </rect>
       </property>
@@ -884,7 +884,7 @@
        <rect>
         <x>20</x>
         <y>290</y>
-        <width>211</width>
+        <width>150</width>
         <height>22</height>
        </rect>
       </property>

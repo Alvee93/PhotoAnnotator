@@ -462,14 +462,14 @@ void MainWindow::on_listView_2_activated(const QModelIndex &index)
 
         //Reduce the size of imgLabel_3 and tableView_2 if there is map data
         ui->imgLabel_3->setFixedSize(400, ui->imgLabel_3->height());
-        ui->imgLabel_3->move(490, ui->imgLabel_3->pos().y());
+        ui->imgLabel_3->move(420, ui->imgLabel_3->pos().y());
         ui->tableView_2->setFixedSize(800, 100);
     }
     else {
         //If there is no map data, set mView_2 as invisible and increase the size of imgLabel_3 and tableView_2
         ui->mView_2->setVisible(0);
         ui->imgLabel_3->setFixedSize(750, ui->imgLabel_3->height()); //setFixedSize(800, 391)
-        ui->imgLabel_3->move(550, ui->imgLabel_3->pos().y());
+        ui->imgLabel_3->move(430, ui->imgLabel_3->pos().y());
         ui->tableView_2->setFixedSize(1180, 100);
     }
     //qDebug() << "Glat = " << Glat;
