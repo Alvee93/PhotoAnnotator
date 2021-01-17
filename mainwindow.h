@@ -20,7 +20,18 @@
 
 #include <QMessageBox>
 
-#include <QFileIconProvider>
+#include <stdlib.h>
+#include <daylightclass.h>
+#include <weatherclass.h>
+#include <gmapclass.h>
+#include <gcalendar.h>
+
+#include <QWebEngineView>
+#include <QWebEngineProfile>
+
+#include <vector>
+#include <sstream>
+#include "facerec.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -35,6 +46,7 @@ public:
     ~MainWindow();
 
     void extract_exif(QString imgPath);
+    void extractDatetimeLatLongData(string s);
 
 private slots:
     void on_treeView_clicked(const QModelIndex &index);
@@ -45,18 +57,33 @@ private slots:
 
     void on_quickBrowse_clicked();
 
-    void show_image(QString imgPath);
     void show_image_metadata();
     void show_image_result();
-    void show_comboBox();
-
-    void on_comboBox_currentIndexChanged(const QString &arg1);
+    void show_allComboBoxes();
 
     void on_listView_2_activated(const QModelIndex &index);
 
-    void on_listView_2_clicked(const QModelIndex &index);
+    void on_pushButton_update_clicked();
 
-    void on_listView_2_doubleClicked(const QModelIndex &index);
+    void on_pushButton_remImage_clicked();
+
+    void updateListViewResult();
+    void on_comboBox_make_currentIndexChanged(const QString &arg1);
+    void on_comboBox_daylight_currentIndexChanged(const QString &arg1);
+
+    void on_comboBox_weather_currentIndexChanged(const QString &arg1);
+
+    void on_comboBox_location_currentIndexChanged(const QString &arg1);
+
+    void on_comboBox_person_currentIndexChanged(const QString &arg1);
+
+    void on_comboBox_event_currentIndexChanged(const QString &arg1);
+
+    void on_pushButton_glogin_clicked();
+
+    void on_pushButton_get_event_clicked();
+
+    void on_pushButton_get_person_clicked();
 
 private:
     Ui::MainWindow *ui;
