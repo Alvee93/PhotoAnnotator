@@ -20,7 +20,7 @@
 
 #include <QMessageBox>
 
-#include <stdlib.h> //------------------------------------ MAY BE UNUSEFUL
+#include <stdlib.h>
 #include <daylightclass.h>
 #include <weatherclass.h>
 #include <gmapclass.h>
@@ -28,6 +28,10 @@
 
 #include <QWebEngineView>
 #include <QWebEngineProfile>
+
+#include <vector>
+#include <sstream>
+#include "facerec.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -59,10 +63,6 @@ private slots:
 
     void on_listView_2_activated(const QModelIndex &index);
 
-    void on_listView_2_clicked(const QModelIndex &index);
-
-    void on_listView_2_doubleClicked(const QModelIndex &index);
-
     void on_pushButton_update_clicked();
 
     void on_pushButton_remImage_clicked();
@@ -82,6 +82,8 @@ private slots:
     void on_pushButton_glogin_clicked();
 
     void on_pushButton_get_event_clicked();
+
+    void on_pushButton_get_person_clicked();
 
 private:
     Ui::MainWindow *ui;

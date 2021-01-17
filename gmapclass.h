@@ -1,6 +1,6 @@
 #ifndef GMAPCLASS_H
 #define GMAPCLASS_H
-
+#include <QApplication>
 #include <QObject>
 
 //includes for http request
@@ -20,7 +20,11 @@
 #include <QJsonArray>
 #include <QString>
 
-//#include <QWebEngineView>
+#include <iostream>
+#include <string>
+#include <sstream>
+#include <iomanip>
+
 
 class GmapClass : public QObject
 {

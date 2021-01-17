@@ -1,10 +1,8 @@
 #include "gcalendar.h"
 
 using namespace std;
-//QString client_id="262658486767-jpb8qhg0dkujn2q48i021s1k83r6aefq.apps.googleusercontent.com"; //
-QString client_id="262658486767-qddccp22dhrh6uk682g7uq26itntf0vo.apps.googleusercontent.com";
-//QString client_secret="bELP5xayCJ6XsLFXMfQFPGcf";
-QString client_secret="prYAYIMZSdOb-f9An-82JIUH";
+QString client_id="_client_id_";
+QString client_secret="_client_secret_";
 QString device_code;
 QString user_code;
 QString grant_type = "http://oauth.net/grant_type/device/1.0";
@@ -17,17 +15,17 @@ GCalendar::GCalendar()
 
 QString GCalendar::gLogin()
 {
-    // just to ignore the logged ssl warnings
+    // Just to ignore the logged ssl warnings
     QLoggingCategory::setFilterRules("qt.network.ssl.w arning=false");
 
-    // create custom temporary event loop on stack
+    // Create custom temporary event loop on stack
     QEventLoop eventLoop;
 
     // "quit()" the event-loop, when the network request "finished()"
     QNetworkAccessManager mgr;
     QObject::connect(&mgr, SIGNAL(finished(QNetworkReply*)), &eventLoop, SLOT(quit()));
 
-    // the HTTP request
+    // The HTTP request
     QUrl device_url = QString("https://accounts.google.com/o/oauth2/device/code");
     //QUrl device_url = QUrl::fromPercentEncoding(":set -u https://accounts.google.com/o/oauth2/device/code content.headers.user_agent 'Mozilla/5.0 (X11; Linux x86_64; rv:57.0) Gecko/20100101 Firefox/57.0'");
     QNetworkRequest networkRequest(device_url);
@@ -43,17 +41,12 @@ QString GCalendar::gLogin()
 
     if (addr_reply->error() == QNetworkReply::NoError) {
 
-        //success WORKS WELL, however enabling this dont show the parsed json values!
-        //qDebug() << "Success " <<addr_reply->readAll() << "\n";
         QByteArray jsonData = addr_reply->readAll();
 
         QJsonDocument document = QJsonDocument::fromJson(jsonData);
 
         device_code = document.object().value("device_code").toString();
         user_code = document.object().value("user_code").toString();
-
-        qDebug() << "device_code = " << device_code;
-        qDebug() << "user_code = " << user_code;
     }
     else {
         //failure
@@ -70,16 +63,17 @@ QString GCalendar::gLogin()
 
 void GCalendar::getAccessToken()
 {
-    QLoggingCategory::setFilterRules("qt.network.ssl.w arning=false");  // just to ignore the logged ssl warnings
+    // Just to ignore the logged ssl warnings
+    QLoggingCategory::setFilterRules("qt.network.ssl.w arning=false");
 
-    // create custom temporary event loop on stack
+    // Create custom temporary event loop on stack
     QEventLoop eventLoop;
 
     // "quit()" the event-loop, when the network request "finished()"
     QNetworkAccessManager mgr;
     QObject::connect(&mgr, SIGNAL(finished(QNetworkReply*)), &eventLoop, SLOT(quit()));
 
-    // the HTTP request
+    // The HTTP request
     QUrl token_url = QString("https://www.googleapis.com/oauth2/v4/token");
     QNetworkRequest networkRequest(token_url);
     networkRequest.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
@@ -91,18 +85,16 @@ void GCalendar::getAccessToken()
             .arg(grant_type);
 
     QNetworkReply *addr_reply = mgr.post(networkRequest, content.toUtf8());
-    eventLoop.exec(); // blocks stack until "finished()" has been called
+    // Blocks stack until "finished()" has been called
+    eventLoop.exec();
 
     if (addr_reply->error() == QNetworkReply::NoError) {
 
-        //success WORKS WELL somehow enabling this dont show the parsed json values!!!
-        //qDebug() << "Success " <<addr_reply->readAll() << "\n";
         QByteArray jsonData = addr_reply->readAll();
 
         QJsonDocument document = QJsonDocument::fromJson(jsonData);
 
         access_token = document.object().value("access_token").toString();
-        qDebug() << "Access Token: " << access_token<< "\n";
     }
     else {
         //failure
@@ -119,19 +111,17 @@ QString GCalendar::getEvent(QString date)
     }
 
     QString event_name;
-    // just to ignore the logged ssl warnings
+    // Just to ignore the logged ssl warnings
     QLoggingCategory::setFilterRules("qt.network.ssl.w arning=false");
 
-    // create custom temporary event loop on stack
+    // Create custom temporary event loop on stack
     QEventLoop eventLoop;
 
     // "quit()" the event-loop, when the network request "finished()"
     QNetworkAccessManager mgr;
     QObject::connect(&mgr, SIGNAL(finished(QNetworkReply*)), &eventLoop, SLOT(quit()));
 
-    // the HTTP request
-    //QString max_date = "2018-08-11";
-    //QString min_date = "2018-08-05";
+    // The HTTP request
     QUrl api_endpoint = QString("https://www.googleapis.com/calendar/v3/calendars/primary/events?"
                                     "timeMax=" + date + "T23%3A59%3A59%2B06%3A00&timeMin=" + date + "T00%3A00%3A00%2B06%3A00&fields=items%2Fsummary");
     QNetworkRequest networkRequest(api_endpoint);
@@ -143,9 +133,6 @@ QString GCalendar::getEvent(QString date)
     eventLoop.exec(); // blocks stack until "finished()" has been called
 
     if (addr_reply->error() == QNetworkReply::NoError) {
-
-        //success WORKS WELL somehow enabling this dont show the parsed json values!!!
-        //qDebug() << "Success " <<addr_reply->readAll() << "\n";
         QByteArray jsonData = addr_reply->readAll();
 
         QJsonDocument document = QJsonDocument::fromJson(jsonData);
@@ -159,8 +146,6 @@ QString GCalendar::getEvent(QString date)
         else {
             event_name = "N/A";
         }
-
-        qDebug() << "Event Name: " << event_name;
     }
     else {
         //failure

@@ -9,6 +9,7 @@ DayLightClass dl_obj;
 WeatherClass weather_obj;
 GmapClass gmap_obj;
 GCalendar gc_obj;
+FaceRec face_obj;
 
 double Glat=0, Glong=0;
 
@@ -62,8 +63,6 @@ void MainWindow::on_treeView_clicked(const QModelIndex &index)
 {
     QString sPath = dirModel->fileInfo(index).absoluteFilePath();
 
-    //qDebug() << "sPath = " << sPath;
-
     ui->listView->setRootIndex(fileModel->setRootPath(sPath));
 
     folderPath = sPath;
@@ -83,18 +82,6 @@ void MainWindow::on_listView_clicked(const QModelIndex &index)
         ui->imgLabel->setPixmap (pix.scaled(w,h,Qt::KeepAspectRatio));
 
         absFilePath = filename;
-        //db.addImg(filename);
-        //ui -> label -> setNum(db.imgExists(filename));
-
-        /*QPixmap icon(filename);
-        QFileIconProvider provider;
-        QFileInfo file(filename);
-        icon = provider.icon(QFileIconProvider::File).pixmap(32, 32);
-        ui->imgLabel_test->setPixmap(icon);
-
-        QStandardItemModel *model = new QStandardItemModel(this);
-        ui->listView_test->setModel(model);
-        model->appendRow(new QStandardItem(QIcon(filename), ""));*/
     }
 }
 
@@ -180,9 +167,6 @@ void MainWindow::on_pushButton_clicked()
 /* This function is called when user clicks button- Update */
 void MainWindow::on_pushButton_update_clicked()
 {
-    // Disable the Update button
-    //ui->pushButton_update->setEnabled(false);
-
     QString daylight = ui->textEdit_daylight->toPlainText();
     QString weather = ui->textEdit_weather->toPlainText();
     QString location = ui->textEdit_location->toPlainText();
@@ -255,10 +239,7 @@ void MainWindow::show_allComboBoxes()
     }
 
     modal->setQuery(query);
-    //modal->insertRow(0);
-    //qDebug() << "modal->rowCount() = " << modal->rowCount();
     ui->comboBox_make->setModel(modal);
-    //ui->comboBox_make->addItem("---");
 
     // Get all daylights from db
     QSqlQueryModel *modal_d = new QSqlQueryModel;
@@ -337,7 +318,6 @@ void MainWindow::extract_exif(QString imgPath)
     if (fread(buf, 1, fsize, fp) != fsize) {
         qDebug() << "Cannot read file";
         delete[] buf;
-        //return 0;
       }
 
     fclose(fp);
@@ -383,18 +363,13 @@ void MainWindow::extract_exif(QString imgPath)
 
     //daylight status
     QString daylight_status = dl_obj.getDayLight(latitude, longitude, o_datetime.toLocal8Bit().constData());
-    //ui->label_debug->setText(daylight_status);
-    //qDebug() << "daylight_status = " << daylight_status;
 
     //weather status
     QString weather_status = weather_obj.getWeather(latitude, longitude, o_datetime.toLocal8Bit().constData());
-    //ui->label_debug->setText(weather_status);
-    //qDebug() << "weather_status = " << weather_status;
 
     QString location;
     if(latitude != 0 || longitude != 0) location = gmap_obj.getAddress(latitude, longitude);
     else location = QString("N/A");
-    //ui->label->setText(location);
 
     QString person_tags = QString("N/A");
     QString event = "N/A";
@@ -404,40 +379,12 @@ void MainWindow::extract_exif(QString imgPath)
               exposure, f_stop, iso, s_distance, e_bias, flash, metering_mode, focal_length,
               focal_length_35mm, latitude, longitude, altitude, min_focal_length, max_focal_length,
               min_f_stop, max_f_stop, lens_make, lens_model, daylight_status, weather_status, location, person_tags, event);
-    //qDebug() << "o_datetime = " << o_datetime;
 
     ui->textEdit_daylight->setText(daylight_status);
     ui->textEdit_weather->setText(weather_status);
     ui->textEdit_location->setText(location);
     ui->textEdit_person->setText(person_tags);
     ui->textEdit_event->setText(event);
-
-    /*ui->cMake-> setText(result.Make.c_str());
-    ui->cMod-> setText(result.Model.c_str());
-    ui->eSoft-> setText(result.Software.c_str());
-    ui->iTitle-> setText(result.ImageDescription.c_str());
-    ui->eTime-> setText(QString("1/ %1 Sec").arg(1.0 / result.ExposureTime));//format: setText(QString("%1").arg(c)
-    ui->iSpeedRating-> setNum(result.ISOSpeedRatings);
-    ui->iBPS-> setNum(result.BitsPerSample);
-    ui->iWidth-> setText(QString(result.ImageWidth));
-    ui->iHeight-> setText(QString(result.ImageHeight));
-    ui->iOrientation-> setNum(result.Orientation);
-    ui->copyR-> setText(result.Copyright.c_str());
-    ui->iDTime-> setText(result.DateTime.c_str());
-    ui->iiDTOri-> setText(result.DateTimeOriginal.c_str());
-    ui->iDTDi-> setText(result.DateTimeDigitized.c_str());
-    ui->sSTO-> setText(result.SubSecTimeOriginal.c_str());
-    ui->fStop-> setText("f/" + QString::number(result.FNumber));
-    ui->sDistance-> setText(QString::number(result.SubjectDistance));
-    ui->eBias-> setText(QString::number(result.ExposureBiasValue) + " EV");
-    ui->rFlash-> setText("Flash: " + QString::number(result.Flash));
-    ui->rMetering-> setText(QString::number(result.MeteringMode)); // ///////////////
-    ui->fLength-> setText(QString("%2 mm").arg(result.FocalLength));
-    ui->fLength35-> setText(QString::number(result.FocalLengthIn35mm) + " mm");
-    //ui->cMake-> setText(result.Make.c_str());
-
-    //result.ExposureTime
-    */
 }
 
 /* When user selects a photo from the listView_2, the image is loaded in imgLabel_3 & respective data is populated in tableView_2 */
@@ -445,12 +392,9 @@ void MainWindow::on_listView_2_activated(const QModelIndex &index)
 {
     QString image_path = ui->listView_2->model()->data(index).toString();
     listView_2_image = image_path;
-    //qDebug() << "val = " << val; //val
-    //qDebug() << "index = " << ui->listView_2->model()->index(0, 0).data().toMap().value("name").toString(); //index
 
     // Get the Glat, Glong & DateTime data from selected image
     extractDatetimeLatLongData(db.getDatetimeLatLongData(image_path));
-    //qDebug() << "getApiData(val) = " << QString::fromStdString(db.getApiData(image_path));
 
     // Show the image location on Google Map
     if(Glat != 0 || Glong != 0) {
@@ -459,7 +403,6 @@ void MainWindow::on_listView_2_activated(const QModelIndex &index)
         ui->mView_2->load(QUrl("https://www.google.com/maps/place/"
                            + QString::number(Glat) + "," + QString::number(Glong)));
         ui->mView_2->setZoomFactor(0.85);
-        //ui->mView_2->resize(680, 490);
         ui->mView_2->setWindowTitle("Image Location on Map");
         ui->mView_2->show();
 
@@ -475,8 +418,6 @@ void MainWindow::on_listView_2_activated(const QModelIndex &index)
         ui->imgLabel_3->move(430, ui->imgLabel_3->pos().y());
         ui->tableView_2->setFixedSize(1180, 100);
     }
-    //qDebug() << "Glat = " << Glat;
-
 
     // Rotate the image according to the orientation
     QMatrix rm;
@@ -495,7 +436,6 @@ void MainWindow::on_listView_2_activated(const QModelIndex &index)
     int w = ui->imgLabel_3->width ();
     int h = ui->imgLabel_3->height ();
     ui->imgLabel_3->setPixmap (pix.transformed(rm).scaled (w,h,Qt::KeepAspectRatio));
-    //ui->imgLabel_3->setText(val);
 
     // Get all data from db
     QSqlQueryModel *modal = new QSqlQueryModel;
@@ -511,22 +451,6 @@ void MainWindow::on_listView_2_activated(const QModelIndex &index)
 
     ui->tableView_2->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
     ui->tableView_2->horizontalHeader()->setDefaultAlignment(Qt::AlignLeft);
-    //ui->tableView_2->horizontalHeader()->setContentsMargins(50, 50, 50, 50); // left, top, right, bottom
-    //ui->tableView_2->setContentsMargins(100, 100, 100, 100);
-}
-
-void MainWindow::on_listView_2_clicked(const QModelIndex &index)
-{
-    /*QString val = ui->listView_2->model()->data(index).toString();
-    qDebug() << "val = " << val; //val
-    qDebug() << "index = " << index; //index*/
-}
-
-void MainWindow::on_listView_2_doubleClicked(const QModelIndex &index)
-{
-    /*QString val = ui->listView_2->model()->data(index).toString();
-    qDebug() << "val = " << val; //val
-    qDebug() << "index = " << index; //index*/
 }
 
 void MainWindow::extractDatetimeLatLongData(string s)
@@ -558,9 +482,9 @@ void MainWindow::on_pushButton_remImage_clicked()
     if(!listView_2_image.isNull()) db.removeImg(listView_2_image);
     show_allComboBoxes();
     ui->statusbar->showMessage("Image successfully deleted from app!", 2000);
-    //ui->listView_2->reset();
 }
 
+/* Shows the (paths of) images on listView_2 fetching data from db*/
 void MainWindow::updateListViewResult()
 {
     QSqlQueryModel *modal = new QSqlQueryModel;
@@ -572,23 +496,12 @@ void MainWindow::updateListViewResult()
         {
             modal->setQuery(query);
             ui->listView_2->setModel(modal);   // it exists
-            //ui->listView_2->setModel(fileModel->setRootPath();
-            //ui->listView_2->setRootIndex(fileModel->setRootPath(sPath));
-            //qDebug() << modal;
         }
         else if(!success){
             qDebug() << "Fetching 'currentIndexChanged' failed: " << query.lastError();
         }
 
         ui->statusbar->showMessage(QString(modal->rowCount()), 4000);
-
-        /*QStandardItemModel *model = new QStandardItemModel(this);
-        ui->listView_2->setModel(model);
-        while(query.next()) {
-            model->appendRow(new QStandardItem(QIcon(query.value(0).toString()), "teststr"));
-            //qDebug() << query.value(0).toString();
-        }*/
-        //qDebug() << "model->item(0, 0) = " << model->item(0, 0)->text();
 }
 
 /* Shows the (paths of) images on listView_2 depending on what is selected on the comboBox_make for camera_make */
@@ -654,7 +567,7 @@ void MainWindow::on_pushButton_glogin_clicked()
     ui->textEdit_device_code->setVisible(true);
     ui->textEdit_device_code->setText(user_code);
 
-    // Web view Portion
+    // WebView Portion
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     ui->mView_login->setAttribute( Qt::WA_DeleteOnClose );      // delete object on closing or exiting
     QWebEngineProfile::defaultProfile()->setHttpUserAgent("Mozilla/5.0 (X11; Linux x86_64; rv:57.0) Gecko/20100101 Firefox/57.0");
@@ -670,13 +583,33 @@ void MainWindow::on_pushButton_get_event_clicked()
     ui->textEdit_device_code->setVisible(false);
 
     extractDatetimeLatLongData(db.getDatetimeLatLongData(absFilePath));
-    //qDebug() << "DateTime = " << QString::fromStdString(DateTime);
-    QString date_time(QString::fromStdString(DateTime));
-    QString date = date_time.left(10); //'date' contains this format- "2019:09:04"
-    date.replace(":", "-"); //'date' contains this format- "2019-09-04"
-    qDebug() << "date = " << date;
 
-    gc_obj.getAccessToken();    // first need to call this for the system to get the access token, when app is restarted
+    QString date_time(QString::fromStdString(DateTime));
+
+    //'date' contains this format- "2019:09:04"
+    QString date = date_time.left(10);
+    date.replace(":", "-"); //'date' contains this format- "2019-09-04"
+
+    // First need to call this for the system to get the access token, when request is made
+    gc_obj.getAccessToken();
+
     QString g_calendar_event = gc_obj.getEvent(date);
     ui->textEdit_event->setText(g_calendar_event);
+}
+
+void MainWindow::on_pushButton_get_person_clicked()
+{
+    QPixmap pix(absFilePath);
+    vector <QString> p_names = face_obj.predictFaces(QPixmapToCvMat(pix));
+    stringstream ss;
+
+    for(size_t i = 0; i < p_names.size(); ++i)
+    {
+      if(i != 0)
+        ss << ", ";
+      ss << p_names[i].toLocal8Bit().constData();
+    }
+
+    string persons = ss.str();
+    ui->textEdit_person->setText(QString::fromStdString(persons));
 }
