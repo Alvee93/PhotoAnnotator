@@ -4,7 +4,9 @@ Photo-Annotator is a photo management application that derives information of lo
 
 
 Install
+```
 The program can be built using QT Creator, OpenCV 2.4.136 and a custom Haar-Cascade model (.xml).
+```
 
 
 Tech/ Framework used
