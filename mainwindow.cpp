@@ -9,7 +9,6 @@ DayLightClass dl_obj;
 WeatherClass weather_obj;
 GmapClass gmap_obj;
 GCalendar gc_obj;
-FaceRec face_obj;
 
 double Glat=0, Glong=0;
 
@@ -600,7 +599,10 @@ void MainWindow::on_pushButton_get_event_clicked()
 void MainWindow::on_pushButton_get_person_clicked()
 {
     QPixmap pix(absFilePath);
-    vector <QString> p_names = face_obj.predictFaces(QPixmapToCvMat(pix));
+    vector <QString> p_names;
+    p_names.push_back("Hubby");
+    p_names.push_back("Wifey");
+
     stringstream ss;
 
     for(size_t i = 0; i < p_names.size(); ++i)
@@ -612,4 +614,11 @@ void MainWindow::on_pushButton_get_person_clicked()
 
     string persons = ss.str();
     ui->textEdit_person->setText(QString::fromStdString(persons));
+}
+
+void MainWindow::on_pushButton_2_clicked()
+{
+    QApplication::setAttribute(Qt::AA_DisableWindowContextHelpButton);
+    lic_obj = new LicDialog(this);
+    lic_obj->show();
 }
