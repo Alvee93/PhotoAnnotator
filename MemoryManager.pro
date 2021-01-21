@@ -17,6 +17,7 @@ SOURCES += \
     facerec.cpp \
     gcalendar.cpp \
     gmapclass.cpp \
+    licdialog.cpp \
     main.cpp \
     mainwindow.cpp \
     weatherclass.cpp
@@ -28,10 +29,12 @@ HEADERS += \
     facerec.h \
     gcalendar.h \
     gmapclass.h \
+    licdialog.h \
     mainwindow.h \
     weatherclass.h
 
 FORMS += \
+    licdialog.ui \
     mainwindow.ui
 
 # Default rules for deployment.

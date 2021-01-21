@@ -10,7 +10,7 @@ Photo-Annotator is a photo management application that derives information of lo
 
 ## Prerequisites
 
-OpenCV 2.4.136 and a custom Haar-Cascade Classifier model (.xml).
+OpenCV 2.4.136, a custom Haar-Cascade Classifier model (.xml) for face detection, and a trained model (.yml) for face recognition.
 
 ## Build
 
