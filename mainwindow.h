@@ -33,6 +33,8 @@
 #include <sstream>
 #include "facerec.h"
 
+#include <licdialog.h>
+
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
@@ -85,10 +87,12 @@ private slots:
 
     void on_pushButton_get_person_clicked();
 
+    void on_pushButton_2_clicked();
+
 private:
     Ui::MainWindow *ui;
     QFileSystemModel *dirModel;
     QFileSystemModel *fileModel;
-    //QStandardItemModel *model;
+    LicDialog *lic_obj;
 };
 #endif // MAINWINDOW_H

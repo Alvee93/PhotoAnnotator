@@ -613,3 +613,10 @@ void MainWindow::on_pushButton_get_person_clicked()
     string persons = ss.str();
     ui->textEdit_person->setText(QString::fromStdString(persons));
 }
+
+void MainWindow::on_pushButton_2_clicked()
+{
+    QApplication::setAttribute(Qt::AA_DisableWindowContextHelpButton);
+    lic_obj = new LicDialog(this);
+    lic_obj->show();
+}
